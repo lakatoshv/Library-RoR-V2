@@ -1,0 +1,304 @@
+<body>
+	<link rel='stylesheet' href='bootstrap/css/bootstrap.css'/>
+    <meta charset="utf-8">   
+    <script src='js/jquery3-2-1.js'></script>
+    <script data-require='bootstrap@3.2.1' data-semver='3.2.1' src='bootstrap/js/bootstrap3.2.1.js'></script>
+    <script data-require='jquery@3.2.1' data-semver='3.2.1' src='js/jquery3-2-1.js'></script>
+    <script src='bootstrap/js/bootstrap-tab.js'></script>
+    <script src='bootstrap/js/bootstrap-dropdown.js'></script>
+    <script src='js/popper.js'></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/build/three.min.js"></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/libs/stats.min.js"></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/CanvasRenderer.js"></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/Projector.js"></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/libs/tween.min.js"></script>
+	<script>
+	var bookid = 0;
+	var books = {
+			"0": {
+				"name": "Книга",
+				"author": "Автор",
+				"img": "book.jpg",
+				"minidescription": "Текст Текст Текст Текст Текст Текст Текст м Текст Текст Текст"
+			},
+			"1": {
+				"name": "Книга",
+				"author": "Автор",
+				"img": "book.jpg",
+				"minidescription": "Текст Текст Текст Текст Текст Текст Текст м Текст Текст Текст"
+			},
+			"2": {
+				"name": "Книга",
+				"author": "Автор",
+				"img": "book.jpg",
+				"minidescription": "Текст Текст Текст Текст Текст Текст Текст м Текст Текст Текст"
+			},
+			"3": {
+				"name": "Книга",
+				"author": "Автор",
+				"img": "book.jpg",
+				"minidescription": "Текст Текст Текст Текст Текст Текст Текст м Текст Текст Текст"
+			},
+			"4": {
+				"name": "Книга",
+				"author": "Автор",
+				"img": "book.jpg",
+				"minidescription": "Текст Текст Текст Текст Текст Текст Текст м Текст Текст Текст"
+			},
+			"5": {
+				"name": "Книга",
+				"author": "Автор",
+				"img": "book.jpg",
+				"minidescription": "Текст Текст Текст Текст Текст Текст Текст м Текст Текст Текст"
+			},
+			"6": {
+				"name": "Книга",
+				"author": "Автор",
+				"img": "book.jpg",
+				"minidescription": "Текст Текст Текст Текст Текст Текст Текст м Текст Текст Текст"
+			},
+			"7": {
+				"name": "Книга",
+				"author": "Автор",
+				"img": "book.jpg",
+				"minidescription": "Текст Текст Текст Текст Текст Текст Текст м Текст Текст Текст"
+			},
+			"8": {
+				"name": "Книга",
+				"author": "Автор",
+				"img": "book.jpg",
+				"minidescription": "Текст Текст Текст Текст Текст Текст Текст м Текст Текст Текст"
+			},
+			"9": {
+				"name": "Книга",
+				"author": "Автор",
+				"img": "book.jpg",
+				"minidescription": "Текст Текст Текст Текст Текст Текст Текст м Текст Текст Текст"
+			}
+			
+		}
+		var intersects;
+		var arrlength = Object.keys( books ).length;
+		var numCubes = 10;
+		var container, stats;
+		var camera, scene, renderer;
+		var textureLoader = new THREE.TextureLoader();
+		var raycaster;
+		var mouse;
+		var isMouseDown = false,
+			onMouseDownPosition, onMouseDownTheta = 45,
+			onMouseDownPhi = 60,
+			phi = 60,
+		camerapos = 0,	theta = 0,
+			radious = 1600,
+			count=0;
+		var lichilnick = 0;
+		var startX = -1800, startY = 800, x = 0, y = 0;
+		init();
+		animate();
+		function ChangeImage(id,image){
+                var el=document.getElementById(id);
+                el.src=image;
+        }
+		function init() {
+			container = document.createElement('div');
+			document.body.appendChild(container);
+			camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
+			camera.position.y = 360;
+			camera.position.z = 555;
+			raycaster = new THREE.Raycaster();
+			mouse = new THREE.Vector2();
+			stats = new Stats();
+			container.appendChild(stats.dom);
+
+			createScene();
+			onMouseDownPosition = new THREE.Vector2();
+			document.addEventListener('mousedown', onDocumentMouseDown, false);
+			document.addEventListener('mousemove', onDocumentMouseMove, false);
+			document.addEventListener('mouseup', onDocumentMouseUp, false);
+			window.addEventListener('resize', onWindowResize, false);
+		}
+
+
+		function createGeometry(id, bookname, auth, img, minidescr) {
+			/*
+			var loader = new THREE.TextureLoader();
+			var mesh = loader.load('book.jpg', function ( texture ) {
+				var geometry = new THREE.BoxGeometry(200, 300, 50 );
+				var material = new THREE.MeshPhongMaterial({map: texture});
+				mesh = new THREE.Mesh(geometry, material);
+				mesh.position.set( x, y, 0 );
+				scene.add(mesh);
+			});	
+			*/
+			var cubeTexture = textureLoader.load(img);
+			var geometry = new THREE.BoxBufferGeometry(200, 300, 50);
+			var object = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+				color: Math.random() * 0xffffff,
+				map: cubeTexture,
+				active: false,
+				type: "book",
+				id: `${id}`
+			}));
+			books[object.id] = {
+				"name": bookname,
+				"author": auth,
+				"img": img,
+				"minidescription": minidescr
+			}
+			alert(id + "      " + object.id)
+			object.position.x = x;
+			object.position.y = y;
+			object.position.z = 0;
+			return object;
+		}
+
+		function createScene() {
+			scene = new THREE.Scene();
+			renderer = new THREE.WebGLRenderer({
+				antialias: true
+			});
+			renderer.autoClear = true;
+			renderer = new THREE.CanvasRenderer();
+			renderer.setClearColor(0xf0f0f0);
+			renderer.setPixelRatio(window.devicePixelRatio);
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			container.appendChild(renderer.domElement);
+			for (var i = 0; i < arrlength; i++) {
+				if(lichilnick == 0){
+					x = startX;
+					if(i == 0) y = startY;
+				}
+				var geometry = createGeometry(i, books[i].name, books[i].author, books[i].img, books[i].minidescription);
+				scene.add(geometry);
+				x = x + 500;
+				lichilnick++;
+				if(lichilnick == 5) {
+					var woodTexture = textureLoader.load('wood.jpg');
+					var geometry = new THREE.BoxBufferGeometry(5000, 60, 50);
+					var polka = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+						color: Math.random() * 0xffffff,
+						map: woodTexture,
+					}));
+					polka.position.x = 0;
+					polka.position.y = y - 180;
+					polka.position.z = 0;
+					scene.add(polka);
+					lichilnick = 0;
+					y = y  - 550;
+				}
+			}
+		}
+
+		function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+		}
+		function turnBack(){
+		}
+		function onDocumentMouseDown(event) {
+			isMouseDown = true;
+			onMouseDownTheta = theta;
+			onMouseDownPhi = phi;
+			onMouseDownPosition.x = event.clientX;
+			onMouseDownPosition.y = event.clientY;
+			mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+			mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+			raycaster.setFromCamera(mouse, camera);
+			intersects = raycaster.intersectObjects(scene.children); //if mouse intersects a cube
+			//theta = /*onMouseDownTheta*/ -20;
+			//theta = intersects[0].object.position.z - 10;
+			if (intersects.length > 0 /*&& intersects[0].object.type == "book"*/) {
+				if(intersects[0].object.id == bookid) {
+					theta = - 15;
+				}
+				else theta = + 200;
+				new TWEEN.Tween(intersects[0].object.position).to(
+					{
+						z: theta
+					}, 2000)
+					.easing(TWEEN.Easing.Elastic.Out).start(); //moves cube
+					count++;
+					if(intersects[0].object.id != bookid){
+						var id = intersects[0].object.id
+						bookid = id;
+						document.getElementById("modal-title").firstChild.nodeValue = books[id].name + " № " + id;
+						document.getElementById("modal-author").firstChild.nodeValue = books[id].author + id;
+						ChangeImage("body-img", books[id].img);
+						document.getElementById("body-text").firstChild.nodeValue = books[id].minidescription;
+						document.getElementById('click').click();
+						for(j = 0; j < object.lenght; j++){
+							theta = - 185;
+							if(id != object.id){
+								new TWEEN.Tween(object[id].position).to({
+									z: theta
+								}, 2000)
+							}
+						}
+					}
+					else{
+						bookid = 0;
+					}
+				
+			}//id, name, author minidescription
+		}
+
+		function onDocumentMouseMove(event) {
+			if (isMouseDown) {
+
+				//theta = -((event.clientX - onMouseDownPosition.x) * 0.5) + onMouseDownTheta;
+			}
+		}
+
+		function onDocumentMouseUp(event) {
+			isMouseDown = false;
+		}
+
+		function animate() {
+			requestAnimationFrame(animate);
+			render();
+			stats.update();
+		}
+
+
+		function render() {
+			TWEEN.update();
+			//theta += 0.1;
+			camera.position.x = radious * Math.sin(THREE.Math.degToRad(camerapos));
+			camera.position.y = radious * Math.sin(THREE.Math.degToRad(camerapos));
+			camera.position.z = radious * Math.cos(THREE.Math.degToRad(camerapos));
+			camera.lookAt(scene.position);
+			renderer.render(scene, camera);
+		}
+
+
+	</script>
+<button type="button" id="click" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="display: none;">
+</button>
+	<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Modal title</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body">
+		<h3 class="modal-title" id="modal-author">Modal title</h3>
+		<div id="body-image"><img id="body-img" src="" height="500" wight="200"/></div>
+		<p id="body-text">...</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Переглянути</button>
+		<button type="button" class="btn btn-primary">Читати онлайн</button>
+		<button type="button" class="btn btn-primary">Слухатин</button>
+		<button type="button" class="btn btn-primary">Скачати</button>
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>

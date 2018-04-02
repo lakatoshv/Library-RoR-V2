@@ -1,0 +1,105 @@
+.axis path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+
+.axis line {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+
+.legendText, .axis text {
+  font-size: 8px;
+  fill: #fff;
+}
+
+#menu {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.dataPoint {
+  fill: orange;
+  stroke: none;
+}
+
+.dataPoint:hover{
+  stroke: white;
+  stroke-width: 2px;
+}
+
+.element {
+  width: 230px;
+  height: 160px;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: rgba(0,0,0,.75);
+  border: 2px solid rgba(127,255,255,0.25);
+  border-radius: 8px;
+  text-align: center;
+  cursor: default;
+}
+
+.element:hover {
+  box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+  border: 1px solid rgba(127,255,255,0.75);
+}
+
+.element svg {
+  position: absolute;
+  top: 20px;
+  left: 2px;
+  right: 0px;
+}
+
+.element .investData {
+  position: absolute;
+  top: 35px;
+  left: 0px;
+  right: 0px;
+  font-size: 40px;
+  color: rgba(255,255,255,0.75);
+}
+
+.element .investLabel {
+  position: absolute;
+  top: 76px;
+  left: 12px;
+  right: 0px;
+  font-size: 8px;
+  color: rgba(255,255,255,0.75);
+}
+
+.element .chartTitle {
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  right: 0px;
+  font-size: 12px;
+  color: rgba(127,255,255,0.75);
+}
+
+button {
+  color: #333;
+  background-color: rgba(127,255,255,1);
+  outline: 1px solid rgba(0,0,0,.75);
+  border: 0px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgba(255,255,255,1);
+}
+
+button:active {
+  color: #000000;
+  background-color: rgba(0,0,0,.75);
+}

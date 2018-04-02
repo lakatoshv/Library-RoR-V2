@@ -1,0 +1,421 @@
+<body>
+	<link rel='stylesheet' href='bootstrap/css/bootstrap.css'/>
+    <meta charset="utf-8">   
+    <script src='js/jquery3-2-1.js'></script>
+    <script data-require='bootstrap@3.2.1' data-semver='3.2.1' src='bootstrap/js/bootstrap3.2.1.js'></script>
+    <script data-require='jquery@3.2.1' data-semver='3.2.1' src='js/jquery3-2-1.js'></script>
+    <script src='bootstrap/js/bootstrap-tab.js'></script>
+    <script src='bootstrap/js/bootstrap-dropdown.js'></script>
+    <script src='js/popper.js'></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/build/three.min.js"></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/libs/stats.min.js"></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/CanvasRenderer.js"></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/Projector.js"></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/libs/tween.min.js"></script>7
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/CSS3DRenderer.js"></script>
+	<script src="js/books.js"></script>
+	<style>
+			#menu {
+				position: absolute;
+				bottom: 20px;
+				width: 100%;
+				text-align: center;
+			}
+			#menu button {
+				color: rgba(127,255,255,0.75);
+				background: gray;
+				outline: 1px solid rgba(127,255,255,0.75);
+				border: 0px;
+				padding: 5px 10px;
+				cursor: pointer;
+			}
+			#menu button:hover {
+				background-color: black;
+			}
+			#menu button:active {
+				color: #000000;
+				background-color: black;
+			}
+			#nav-menu {
+				position: absolute;
+				bottom: 20px;
+				left: 50px;
+				width: 100%;
+			}
+			#nav-menu button {
+				color: rgba(127,255,255,0.75);
+				background: gray;
+				outline: 1px solid rgba(127,255,255,0.75);
+				border: 0px;
+				padding: 10px 20px;
+				cursor: pointer;
+			}
+			#nav-menu button:hover {
+				background-color: black;
+			}
+			#nav-menu button:active {
+				color: #000000;
+				background-color: black;
+			}
+	</style>
+	
+<div id="container"></div>
+<div id="menu" >
+	<button id="table" OnClick="init('table');">Таблиця</button>
+	<button id="helix" OnClick="init('helix');">Спіраль</button>
+</div>
+<div id="nav-menu">
+	<button><span class="glyphicon glyphicon-chevron-left" OnClick="move('chevron-left');"> </span></button>
+	<button><span class="glyphicon glyphicon-arrow-left" OnClick="move('left');"> </span></button>
+	<button><span class="glyphicon glyphicon-arrow-up" OnClick="move('up');"> </span></button>
+	<button><span class="glyphicon glyphicon-arrow-down" OnClick="move('down');"> </span></button>
+	<button><span class="glyphicon glyphicon-arrow-right" OnClick="move('right');"> </span></button>
+	<button><span class="glyphicon glyphicon-chevron-right" OnClick="move('chevron-right');"> </span></button>
+</div>
+	<script>
+	var config = {
+				//controls_target:		[-2600, 0, 1300],
+				controls_target:		[0, 0, 0],
+				controls_allow_move:	true,
+				controls_allow_zoom:	true,
+	};
+	var bookid = 0;
+	var targets = { table: [], sphere: [], helix: [], grid: [] };
+		var objects = [];
+		var intersects;
+		var arrlength = Object.keys( books ).length;
+		var numCubes = 10;
+		var container, stats;
+		var camera, scene, renderer, controls;
+		var textureLoader = new THREE.TextureLoader();
+		var raycaster;
+		var mouse;
+		var isMouseDown = false,
+			onMouseDownPosition, onMouseDownTheta = 45,
+			onMouseDownPhi = 60,
+			phi = 60,
+		camerapos = 0,	theta = 0,
+			radious = 1600,
+			count=0;
+		var lichilnick = 0;
+		var startX = -1800, startY = 800, x = 0, y = 0, z = 0;
+		var typeDef = "helix";
+		init(typeDef);
+		animate();
+		function ChangeImage(id,image){
+                var el=document.getElementById(id);
+                el.src=image;
+        }
+		function init(type) {
+			alert(type);
+			typeDef = type; 
+			container = document.createElement('div');
+			document.getElementById( 'container' ).remove()
+			var d = document.createElement('div');
+			d.id ='container';
+			document.body.appendChild(d);
+			document.getElementById( 'container' ).appendChild(container);
+			camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
+			camera.position.y = 360;
+			if(type === "table") camera.position.z = 555; 
+			else camera.position.z = 1500;
+			raycaster = new THREE.Raycaster();
+			mouse = new THREE.Vector2();
+			stats = new Stats();
+			container.appendChild(stats.dom);
+
+			createScene(type);
+			onMouseDownPosition = new THREE.Vector2();
+			document.addEventListener('mousedown', onDocumentMouseDown, false);
+			document.addEventListener('mousedown', onMouseDown, false);
+			//document.addEventListener('mousemove', onDocumentMouseMove, false);
+			//document.addEventListener('mouseup', onDocumentMouseUp, false);
+			window.addEventListener('resize', onWindowResize, false);
+			if(type === "helix"){
+			controls = new THREE.OrbitControls( camera, renderer.domElement );
+				controls.rotateSpeed = 10;
+				controls.target = new THREE.Vector3( config['controls_target'][0], config['controls_target'][1], config['controls_target'][2] );
+				controls.noRotate = config['controls_allow_move'] ? false : true;
+				controls.minDistance = config['controls_allow_zoom'] ? 700 : 2600; // when min-max equal zoom is blocked
+				controls.maxDistance = 2600; // 2900
+				controls.minPolarAngle = d2r(90); // equal min max blocks vertical panning
+				controls.maxPolarAngle = d2r(90);
+	
+				controls.addEventListener( 'change', render );
+			}
+			/*
+				var button = document.getElementById( 'table' );
+				button.addEventListener( 'click', function ( event ) {
+					transform( targets.table, 2000 );
+				}, false );
+				var button = document.getElementById( 'helix' );
+				button.addEventListener( 'click', function ( event ) {
+					transform( targets.helix, 2000 );
+				}, false );
+				transform( targets.helix, 2000 );
+			*/
+		}
+
+
+		function createGeometry(id, bookname, auth, img, minidescr) {
+			/*
+			var loader = new THREE.TextureLoader();
+			var mesh = loader.load('book.jpg', function ( texture ) {
+				var geometry = new THREE.BoxGeometry(200, 300, 50 );
+				var material = new THREE.MeshPhongMaterial({map: texture});
+				mesh = new THREE.Mesh(geometry, material);
+				mesh.position.set( x, y, 0 );
+				scene.add(mesh);
+			});	
+			*/
+			var cubeTexture = textureLoader.load(img);
+			var geometry = new THREE.BoxBufferGeometry(200, 300, 50);
+			var object = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+				color: Math.random() * 0xffffff,
+				map: cubeTexture,
+				active: false,
+				type: "book",
+				id: `${id}`
+			}));
+			books[object.id] = {
+				"name": bookname,
+				"author": auth,
+				"img": img,
+				"minidescription": minidescr
+			}
+			//alert(id + "      " + object.id)
+			object.position.x = x;
+			object.position.y = y;
+			if(typeDef === "table") object.position.z = 0;
+			else object.position.z = z;
+			return object;
+		}
+
+		function createScene(type) {
+			renderer = new THREE.WebGLRenderer({
+				antialias: true
+			});
+			renderer.autoClear = true;
+			renderer = new THREE.CanvasRenderer();
+			renderer.setClearColor(0x111111);
+			renderer.setPixelRatio(window.devicePixelRatio);
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			container.appendChild(renderer.domElement);
+			scene = new THREE.Scene();
+			if(type === "table"){
+				for (var i = 0; i < arrlength; i++) {
+					if(lichilnick == 0){
+						x = startX;
+						if(i == 0) y = startY;
+					}
+					var geometry = createGeometry(i, books[i].name, books[i].author, books[i].img, books[i].minidescription);
+					scene.add(geometry);
+					//targets.table.push( geometry );
+					objects.push( geometry );
+					x = x + 500;
+					lichilnick++;
+					if(lichilnick == 8) {
+						var woodTexture = textureLoader.load('wood.jpg');
+						var geometry = new THREE.BoxBufferGeometry(5000, 60, 50);
+						var polka = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+							color: Math.random() * 0xffffff,
+							map: woodTexture,
+						}));
+						polka.position.x = 0;
+						polka.position.y = y - 180;
+						polka.position.z = 0;
+						scene.add(polka);
+						//targets.table.push( polka );
+						objects.push( polka );
+						lichilnick = 0;
+						y = y  - 550;
+					}
+				}
+			}
+			else if(type === "helix"){
+				var cylindrical = new THREE.Cylindrical();
+				for ( var i = 0; i < arrlength; i ++ ) {
+					var thetat = i * 0.175 + Math.PI;
+					var yt = - ( i * 8 ) + 200;
+					var object = new THREE.Object3D();
+					cylindrical.set( 400, thetat, yt );
+					object.position.setFromCylindrical( cylindrical );
+					x = object.position.x * 2;
+					y = object.position.y *1.2;
+					z = object.position.z * 2;
+					var geometry = createGeometry(i, books[i].name, books[i].author, books[i].img, books[i].minidescription);
+					objects.push( geometry );
+					scene.add(geometry);
+					//targets.helix.push( geometry );
+				}
+			}
+		}
+		
+		
+		function transform( targets, duration ) {
+				TWEEN.removeAll();
+				for ( var i = 0; i < objects.length; i ++ ) {
+					var object = objects[ i ];
+					var target = targets[ i ];
+					new TWEEN.Tween( object.position )
+						.to( { x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+					new TWEEN.Tween( object.rotation )
+						.to( { x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+				}
+				new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
+		}
+		
+		
+		function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+		}
+		function onDocumentMouseDown(event) {
+			isMouseDown = true;
+			onMouseDownTheta = theta;
+			onMouseDownPhi = phi;
+			onMouseDownPosition.x = event.clientX;
+			onMouseDownPosition.y = event.clientY;
+			mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+			mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+			raycaster.setFromCamera(mouse, camera);
+			intersects = raycaster.intersectObjects(scene.children); //if mouse intersects a cube
+			//theta = /*onMouseDownTheta*/ -20;
+			//theta = intersects[0].object.position.z - 10;
+			if (intersects.length > 0 /*&& intersects[0].object.type == "book"*/) {
+				if(intersects[0].object.id == bookid) {
+					if(typeDef === "table") theta -= 15;
+					else theta -= 200;
+				}
+				else{
+					if(typeDef === "table") theta += 200;
+					else theta = + 1000;
+				}
+				new TWEEN.Tween(intersects[0].object.position).to(
+					{
+						z: theta
+					}, 2000)
+					.easing(TWEEN.Easing.Elastic.Out).start(); //moves cube
+					count++;
+					if(intersects[0].object.id != bookid){
+						var id = intersects[0].object.id
+						bookid = id;
+						document.getElementById("modal-title").firstChild.nodeValue = books[id].name + " № " + id;
+						document.getElementById("modal-author").firstChild.nodeValue = books[id].author + id;
+						ChangeImage("body-img", books[id].img);
+						document.getElementById("body-text").firstChild.nodeValue = books[id].minidescription;
+						document.getElementById('click').click();
+						for(j = 0; j < object.lenght; j++){
+							theta = - 185;
+							if(id != object.id){
+								new TWEEN.Tween(object[id].position).to({
+									z: theta
+								}, 2000)
+							}
+						}
+					}
+					else{
+						bookid = 0;
+					}
+			}
+			
+		}
+		function onMouseDown(event) {
+		}
+		/*
+		function onDocumentMouseMove(event) {
+				//theta = -((event.clientX - onMouseDownPosition.x) * 0.5) + onMouseDownTheta;
+				var halfwidth = window.innerWidth/2;
+				var y = event.clientY;
+				if(y < halfwidth){
+					scene.rotation.y -= 120;
+				}
+				else{
+					scene.rotation.y += 120;
+				}
+				document.getElementById("y").firstChild.nodeValue = y;
+				document.getElementById("halfwidth").firstChild.nodeValue = halfwidth;
+		}
+		*/
+		function move(nav){
+			if(nav === "left") scene.rotation.y += 120;
+			else if(nav === "right") scene.rotation.y -= 120;
+			else if(nav === "up") scene.rotation.x += 0.05;
+			else if(nav === "down") scene.rotation.x -= 0.05;
+			
+			else if(nav === "chevron-left") {
+				scene.rotation.y += 120;
+				scene.rotation.x -= 0.05;
+			}
+			else if(nav === "chevron-right") {
+				scene.rotation.y -= 120;
+				scene.rotation.x += 0.05;
+			}
+			
+		}
+		function onDocumentMouseUp(event) {
+			isMouseDown = false;
+		}
+
+		function animate() {
+			requestAnimationFrame(animate);
+			//TWEEN.update();
+			if(typeDef === "helix") controls.update();
+			render();
+			stats.update();
+		}
+
+
+		function render() {
+			TWEEN.update();
+			//theta += 0.1;
+			if(typeDef === "table"){
+				camera.position.x = radious * Math.sin(THREE.Math.degToRad(camerapos));
+				camera.position.y = radious * Math.sin(THREE.Math.degToRad(camerapos));
+				camera.position.z = radious * Math.cos(THREE.Math.degToRad(camerapos));
+			}
+			camera.lookAt(scene.position);
+			renderer.render(scene, camera);
+		}
+		function d2r(degrees){
+			return degrees * Math.PI / 180;
+		}
+
+	</script>
+<button type="button" id="click" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="display: none;">
+</button>
+	<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Modal title</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body">
+		<h3 class="modal-title" id="modal-author">Modal title</h3>
+		<div id="body-image"><img id="body-img" src="" height="500" wight="200"/></div>
+		<p id="body-text">...</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Переглянути</button>
+		<button type="button" class="btn btn-primary">Читати онлайн</button>
+		<button type="button" class="btn btn-primary">Слухатин</button>
+		<button type="button" class="btn btn-primary">Скачати</button>
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
