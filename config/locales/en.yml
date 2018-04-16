@@ -1,0 +1,434 @@
+en:
+  active_admin:
+    name_site: "Library Ruby On Rails"
+
+  abouts:
+    about_program:
+      title: "About site"
+      description: "This site is full curriculum, so if you have I noticed any copyright infringement that go "
+      here: "here"
+
+    about_us:
+      title: "About us"
+      front-end: "Lakatosh Vitaliy"
+      back-end: "Danko Olexandr"
+      manager: "Popovich Andriy"
+      manager_t: "Manager"
+      leader: "team leader"
+      github: "Github of project"
+      follow: "Follow us on Github:"
+
+    for_holders:
+      title: "Authors and holders"
+      text-1: "If you are the owner, author or legal representative of the owner (author) in the website and other information and you have objections or comments on this fact, want to add to it or change to clarify any information or to publish other documents, then let us at"
+      text-2: ", attaching the letter to confirm your rights to material protected by copyright and page reference book on our website. After reading, we will take all measures to eliminate facts that violate your property rights or perform other reasonable requirements.
+Site administration necessarily remove all information that violates copyright holders upon request.
+Blocking materials occurs as soon as possible, no more than 3 days."
+
+  auths:
+    form:
+      auth: "Author"
+      book: "Book/Books"
+      biography: "Biography"
+      submit: "Submit"
+      back: "Back"
+
+    edit:
+      title: "Editing"
+      show: "Show"
+      back: "Back"
+
+    index:
+      title: "Authors"
+      show: "Show"
+      edit: "Edit"
+      delete: "Remove"
+      question: "Are you sure?"
+      new: "Add new author"
+      back: "Back"
+      delete: "Delete"
+    
+    new:
+      title: "Add new author"
+
+    show:
+      book: "Book/Books"
+      edit: "Edit"
+      back: "Back"
+      biography: "Biography"
+      like: "Like"
+      dislike: "Do not like"
+
+  books:
+    form:
+      title: "Name"
+      auth: "Author"
+      zhanr: "Genre"
+      qty: "Number of pages"
+      description: "Description"
+      mini_description: "Mini description"
+      image_url: "Address to the picture"
+      submit: "Submit"
+      file_name: "File name"
+      downloaded_from: "Site address from which downloaded"
+      url_to_file: "Address to file"
+      file_extension: "File extension"
+      language: "Language"
+      back: "Back"
+
+    form_kritics:
+      name: "Author"
+      title_book: "Name of book"
+      recensiya: "Review"
+      ocinka: "Rating"
+      submit: "Submit"
+      message: "You are not authorized!"
+
+    form_vidguk:
+      name: "Author"
+      title_book: "Name of book"
+      recensiya: "Review"
+      ocinka: "Date"
+      submit: "Submit"
+      message: "You are not authorized!"
+
+    edit:
+      title: "Editing a book"
+      show: "Show"
+
+    index:
+      label_T: "Name"
+      label_A: "Author"
+      label_Z: "Genre"
+      label_Q: "Number of pages"
+      label_D: "Description"
+      label_I: "Address to the picture"
+      h1: "Books"
+      show: "Show"
+      edit: "Edit"
+      delete: "Remove"
+      question: "Are you sure?"
+      new: "Add new book"
+      back: "Back"
+      sort_by: "Sort by"
+      by_title: "Name"
+      by_auth: "Author"
+      by_zhanr: "Zhanr"
+      by_likes: "Likes"
+      by_dislikes: "Dislikes"
+      type_sort: "Sorting type"
+      asc: "Ascending"
+      desc: "Descending"
+      sort: "Sort"
+      read: "Read"
+      download: "Download"
+
+    new:
+      h1: "Add new book"
+
+    read:
+      back: "Back"
+      top: "Back to top"
+
+    show:
+      label_T: "Name"
+      label_A: "Author"
+      label_Z: "Genre:"
+      label_Q: "Number of pages:"
+      label_D: "Description:"
+      label_:I: "Address to the picture"
+      edit: "Edit"
+      kritic: "Critics"
+      write_kritic: "Write critics"
+      review: "Reviews"
+      write_review: "Write a review"
+      kritics: "Kritics"
+      vidguks: "Reviews"
+      show: "Show"
+      edit: "Edit"
+      delete: "Remove"
+      question: "The file may contain encodings that are not supported by your device"
+      kritic: "New critics"
+      vidguk: "New review"
+      back: "Back"
+      ocinka_kritikiv: "Kritics review:"
+      read: "Read: "
+      language: "Language:"
+      download: "Download:"
+      buy: "Buy:"
+      like: "Like"
+      dislike: "Do not like"
+
+  devise:
+    sessions:
+      new:
+        title: "Log in"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+        remember: "Remember me"
+        submit: "Sign in"
+
+    confirmations:
+      new:
+        h2: "Resend confirmation instructions"
+        email: "Email"
+        submit: "Submit"
+
+    mailer:
+      confirmation_instructions:
+        h2: "Resend confirmation instructions"
+        p: "You can confirm your account email through the link below:"
+        confirm: "Confirm my account"
+
+      email_changed:
+        p1: "Hello"
+        p2: "We're contacting you to notify you that your email is being changed to"
+        p3: "We're contacting you to inform you that your email address has been changed to"
+
+      password_change:
+        p1: "Hello"
+        p2: "We're contacting you to notify you that your password has been changed."
+
+      reset_password_instructions:
+        p1: "Hello"
+        p2: "Someone has requested a link to change your password. You can do this through the link below."
+        change: "Change my password"
+        p3: "If you didn't request this, please ignore this email."
+        p4: "Your password won't change until you access the link above and create a new one."
+
+      unlock_instructions:
+        p1: "Hello"
+        p2: "Your account has been locked due to an excessive number of unsuccessful sign in attempts."
+        p3: "Click the link below to unlock your account:"
+        unlock: "Unlock my account"
+
+    password:
+      edit:
+        h2: "Изменение пароля"
+        password: "Новый пароль"
+        confirm: "Подтвердите новый пароль"
+        submit: "Изменить пароль"
+
+      new:
+        h2: "Forgot your password?"
+        email: "Email"
+        submit: "Send me reset password instructions"
+
+    registrations:
+      edit:
+        h2: "Edit"
+        email: "Email"
+        div: "Currently waiting confirmation for:"
+        password: "Password"
+        leave: "leave blank if you don't want to change it"
+        password_confirmation: "Password confirmation"
+        current_password: "Current password"
+        need: "we need your current password to confirm your changes"
+        submit: "Update"
+        cancel: "Cancel my account"
+        question: "Are you sure?"
+        back: "Back"
+
+      new:
+        h2: "Sign up new User"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+        submit: "Sign up"
+
+    shared:
+      links:
+        log_in: "Log in"
+        sign_in: "Sign in with"
+        sign_up: "Sign up"
+        forgot: "Forgot your password?"
+        didnt_receive_confirmation: "Didn't receive confirmation instructions?"
+        didnt_receive_unlock: "Didn't receive unlock instructions?"
+
+  kritics:
+    form:
+      name: "Author"
+      title_book: "Name of book"
+      recensiya: "Review"
+      ocinka: "Rating"
+      submit: "Submit"
+
+    edit:
+      h1: "Editing"
+      show: "Show"
+      back: "Back"
+
+    new:
+      h1: "Add new kritics"
+      back: "Back"
+
+    show:
+      name: "Author"
+      title_book: "Name of book"
+      recensiya: "Review"
+      ocinka: "Rating"
+      submit: "Submit"
+      edit: "Edit"
+      back: "Back"
+
+  layouts:
+    application:
+      title: "Library on RubyOnRails"
+      name: "Library on Ruby On Rails"
+      book: "Books"
+      registration: "Registration"
+      autorisation: "Autorisation"
+      exit: "Exit"
+      lang: "Language"
+      ua: "ua"
+      ru: "ru"
+      en: "en"
+      auth: "Authors"
+      zhanr: "Genres"
+      about_site: "About site"
+      about_us: "About us"
+      holders: "Holders"
+      look_in: "Look in:"
+      books: "Books"
+      auths: "Authors"
+      submit: "Search"
+      messages: "Messages"
+      contact_us: "Contact with us"
+
+  userparams:
+    my_books:
+      label_T: "Name"
+      label_A: "Author"
+      label_Z: "Genre"
+      label_Q: "Number of pages"
+      label_D: "Description"
+      label_I: "Address to the picture"
+      h1: "Books"
+      show: "Show"
+      edit: "Edit"
+      delete: "Remove"
+      question: "Are you sure?"
+      new: "Add new book"
+      back: "Back"
+      sort_by: "Sort by"
+      by_title: "Name"
+      by_auth: "Author"
+      by_likes: "Likes"
+      by_dislikes: "Dislikes"
+      type_sort: "Sorting type"
+      asc: "Ascending"
+      desc: "Descending"
+      sort: "Sort"
+      read: "Read"
+      download: "Download"
+
+    profile:
+      profile: "Profile"
+      town: "City"
+      books: "Liked books"
+      edit_info: "Edit information"
+      add_info: "Add information"
+      back: "Back"
+
+    edit:
+      first_name: "First name"
+      last_name: "Last name"
+      city: "City"
+      photo: "Photo"
+      submit: "Submit"
+
+    new:
+      first_name: "First name"
+      last_name: "Last name"
+      city: "City"
+      photo: "Photo"
+      submit: "Submit"
+
+  vidguks:
+    form:
+      name: "Author"
+      title_book: "Name of book"
+      recensiya: "Review"
+      ocinka: "Date"
+      submit: "Submit"
+      message: "You are not authorized!"
+
+    edit:
+      h1: "Editing"
+      show: "Show"
+      back: "Back"
+
+    index:
+      h1: "Kritics"
+      label_A: "Author"
+      show: "Show"
+      edit: "Edit"
+      delete: "Remove"
+      question: "Are you sure?"
+      new: "Add new review"
+      back: "Back"
+
+    new:
+      h1: "Add new review"
+      back: "Back"
+
+    show:
+      name: "Author"
+      title_book: "Name of book"
+      recensiya: "Review"
+      ocinka: "Date"
+      submit: "Submit"
+      edit: "Edit"
+      back: "Back"
+
+  zhanrs:
+    index:
+      label_Z: "Genrs"
+      show: "Show"
+      edit: "Edit"
+      delete: "Remove"
+      question: "Are you sure?"
+      new: "Add new zhanr"
+      back: "Back"
+
+    show:
+      label_Z: "Genre"
+      edit: "Edit"
+      back: "Back"
+
+  messages:
+    new:
+      subject: "Subject"
+      message: "Message"
+      recipients: "Choose recipients"
+      h1: "Write us a message"
+      send: "Send"
+
+  conversations:
+    conversation:
+      restore: "Restore"
+      move: "Move to trash"
+      read: "Read"
+      question: "Are you sure?"
+      from: "From"
+      subject: "Subject"
+
+    index:
+      write_messaage: "Write new message"
+      inbox: "Inbox messages"
+      sent: "Sent messages"
+      trash: "Trash"
+      clear: 'Empty trash'
+      question: "Are you sure?"
+
+    show:
+      subject: "Subject"
+      message: "Message"
+      from: "From"
+      date: "Date"
+      answer: "Answer message"
+      write: "Type something..."
+      send: "Send"
+
+

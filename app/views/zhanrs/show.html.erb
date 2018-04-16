@@ -1,0 +1,20 @@
+<div class="col-md-4 col-md-offset-4 back">
+  <p id="notice"><%= notice %></p>
+  <div class="show_h2 text-center">
+
+    <p>
+      <strong><%= @zhanr.zhanr %></strong>
+    </p>
+  </div> 
+  <div class="show_h2_content">  
+    <p>
+      <strong><%= t ".label_Z" %></strong>
+      <%= @zhanr.zhanr %>
+    </p>
+
+  </div>
+  <div class="show_h2_content text-center">
+    <%= link_to t ".back", zhanrs_path %>
+  </div>
+</div>
+

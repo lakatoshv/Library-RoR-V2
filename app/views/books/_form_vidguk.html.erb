@@ -1,0 +1,62 @@
+  <%= form_for(vidguk) do |f| %>
+    <% if vidguk.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(vidguk.errors.count, "error") %> prohibited this vidguk from being saved:</h2>
+        <ul>
+          <% vidguk.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <% if user_signed_in? %>
+      <div class="form-group">
+        <label class="col-xs-2 control-label"><%= t ".name" %></label>
+        <%= f.text_field :name, :class => "form-control", :value => current_user.email %>
+      </div>
+      <div class="form-group">
+        <%= f.text_field :title_book, :value => @book.title, :class => "form-control", :type => "hidden" %>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-2 control-label"><%= t ".recensiya" %></label>
+        <%= f.text_field :vidguk, :class => "form-control" %>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-2 control-label"><%= t ".ocinka" %></label>
+        <%= f.text_field :date, :class => "form-control" %>
+      </div>
+      <div class="actions">
+        <% 
+          submit = t ".submit" 
+          back = t ".back"
+        %>
+        <%= f.button submit, class: "btn btn-default btn-primary btn-block button-background" %>
+      </div>
+    <% else %>
+      <div class="alert alert-danger">
+        <strong><%= t ".message" %></strong>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-2 control-label"><%= t ".name" %></label>
+        <%= f.text_field :name, :class => "form-control", :disabled => "disabled" %>
+      </div>
+      <div class="form-group">
+        <%= f.text_field :title_book, :value => @book.title, :class => "form-control", :type => "hidden" %>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-2 control-label"><%= t ".recensiya" %></label>
+        <%= f.text_field :vidguk, :class => "form-control", :disabled => "disabled" %>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-2 control-label"><%= t ".ocinka" %></label>
+        <%= f.text_field :date, :class => "form-control", :disabled => "disabled" %>
+      </div>
+      <div class="actions">
+        <% 
+          submit = t ".submit" 
+          back = t ".back"
+        %>
+        <%= f.button submit, class: "btn btn-default btn-primary btn-block button-background", :disabled => "disabled" %>
+      </div>
+    <% end %>
+  <% end %>

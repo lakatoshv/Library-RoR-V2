@@ -1,0 +1,27 @@
+<h2 class="col-md-6 col-md-offset-3 text-center"><%= t ".title" %></h2>
+<div  class="col-md-4 col-md-offset-4">
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <div class="field">
+      <label><%= t ".email" %></label><br />
+      <%= f.email_field :email, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <label><%= t ".password" %></label><br />
+      <%= f.password_field :password, autocomplete: "off" %>
+    </div>
+
+    <% if devise_mapping.rememberable? -%>
+      <div class="field">
+        <%= f.check_box :remember_me %>
+        <label><%= t ".remember" %></label>
+      </div>
+    <% end -%>
+
+    <div class="actions">
+      <input type="submit" name="submit" value=<%= text[:h2] %>>
+    </div>
+  <% end %>
+
+  <%= render "users/shared/links" %>
+</div>

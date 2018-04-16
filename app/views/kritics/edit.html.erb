@@ -1,0 +1,10 @@
+<div class="back">
+  <h1 class="col-md-6 col-md-offset-3 text-center back"><%= t ".h1" %></h1>
+  <%= render 'form', kritic: @kritic %>
+  <%
+    show = t ".show"
+    back = t ".back"
+  %>
+	<%= link_to show, @kritic %> |
+	<%= link_to back, kritics_path %>
+</div>

@@ -1,0 +1,37 @@
+.product-wrapper {
+	display: block;
+	width: 100%;
+	float: left;
+	transition: width .2s;
+
+	.product {
+		display: block;
+		border: 1px solid #b5e9a7;
+		border-radius: 3px;
+		position: relative;
+		background: #fff;
+		margin: 0 20px 20px 0;
+		text-decoration: none;
+		color: #474747;
+		z-index: 0;
+		height: 300px;
+	}
+}
+
+@media only screen and (min-width: 450px) {
+	.product-wrapper {
+		width: 50%;
+	}
+}
+
+@media only screen and (min-width: 768px) {
+	.product-wrapper {
+		width: 33.333%;
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.product-wrapper {
+		width: 25%;
+	}
+}

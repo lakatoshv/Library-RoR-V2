@@ -1,0 +1,48 @@
+<% if session[:lang] == "ua" 
+    text ={
+      :h2 => "Змінити пароль",
+      :password => "Новий пароль",
+      :confirm => "Підтвердити новий пароль",
+      :submit => "Змінити пароля"
+    } 
+  elsif session[:lang] == "en" 
+    text ={
+      :h2 => "Change your password",
+      :password => "New password",
+      :confirm => "Confirm new password",
+      :submit => "Change my password"
+    } 
+  elsif session[:lang] == "ru"
+    text ={
+      :h2 => "Изменение пароля",
+      :password => "Новый пароль",
+      :confirm => "Подтвердите новый пароль",
+      :submit => "Изменить пароль"
+    } 
+  end 
+%>
+<h2 class="col-md-6 col-md-offset-3"><%= text[:h2] %></h2>
+
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+  <%= devise_error_messages! %>
+  <%= f.hidden_field :reset_password_token %>
+
+  <div class="field">
+    <%= f.label :password, text[:password] %><br />
+    <% if @minimum_password_length %>
+      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+    <% end %>
+    <%= f.password_field :password, autofocus: true, autocomplete: "off" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation, text[:confirm] %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+  </div>
+
+  <div class="actions">
+    <input type="submit" name="submit" value=<%= text[:submit] %>>
+  </div>
+<% end %>
+
+<%= render "users/shared/links" %>

@@ -1,0 +1,168 @@
+<% suma_ocinok = 0 %>
+<% count = @kritics.count %>
+<% @kritics.each do |kritic| %>
+  <% suma_ocinok += kritic.ocinka.to_i %>
+<% end %>
+<% if suma_ocinok == 0 || count == 0 %>
+  <% ocinka_kritikiv = 0 %>
+<% else %> 
+  <% ocinka_kritikiv = suma_ocinok/count %> 
+<% end %>
+<div class="col-md-4 col-md-offset-4 back">
+  <p id="notice"><%= notice %></p>
+  <div class="show_h2 text-center">
+    <ul class="list-inline">
+      <li><%= image_tag @book.image_url.url(:medium), :class => "img-thumbnail" %></li>
+      <li>
+        <div>
+          <p class="show_h2">
+            <strong><%= @book.title %></strong>
+          </p>
+          <p class="show_h2">
+            <strong><%= @book.auth %></strong>
+          </p>
+          <p>
+            <strong><%= t ".label_Z" %></strong>
+            <%= @book.zhanr %>
+          </p>
+      </li>
+    </ul>
+  </div> 
+  <div class="show_h2_content">  
+    <p>
+      <ul class="list-inline">
+      <li><strong><%= t ".ocinka_kritikiv" %></strong></li>
+      <li><div class="review-rating" data-score="<%= ocinka_kritikiv %>"></div></li>
+    </p>
+    <%
+      like = t ".like"
+      dislike = t ".dislike"
+    %>
+    <p>
+      <span class="glyphicon glyphicon-thumbs-up"><%= @book.get_likes.size %></span>
+      <span class="glyphicon glyphicon-thumbs-down"><%= @book.get_dislikes.size %></span>
+      <%= link_to like, like_book_path(@book), class: "btn btn-default blue" %>
+      <%= link_to dislike, dislike_book_path(@book), class: "btn btn-default red" %><br>
+    </p>
+    <p>
+      <strong><%= t ".label_Q" %></strong>
+      <%= @book.pages_qty %>
+    </p>
+    <p>
+      <strong><%= t ".label_D" %></strong>
+      <%= @book.description %>
+    </p>
+    <p>
+      <strong><% read = t ".read" %></strong>
+      <%= t ".language" %>: <%= @book.language %>
+    </p>
+    <p> 
+      <strong><%= "Формат: " + @book.rozshirennya %></strong><br>
+        <%=form_for :download, url:  downl_path do |f| %>
+          <%= f.text_field :url_to_book, :value => @book.name_of_file + "." + @book.rozshirennya, :type => "hidden" %>
+          <% download = t ".download" %>
+          <%= link_to read, read_book_path(@book), class: "btn btn-default btn-block button-background" %>
+          <%= f.submit download, class: "btn btn-default btn-block button-background", :id => "download" %>
+        <% end %>
+    </p>
+
+  </div>
+  <div class="show_h2_content text-center">
+    <%
+      like = t ".like"
+      dislike = t ".dislike"
+      edit = t ".edit"
+      back = t ".back"
+      delete = t ".delete"
+      question = t ".question"
+      read = t ".read"
+    %>
+    <%= link_to back, books_path, class: "btn btn-default btn-block button-background" %>
+  </div><br>
+  <div id="line"></div>
+  <br><br><br>
+  <div>
+      <a href="#" class="show_kritics" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><h2 class="text-left"><%= t ".kritics" %></h2><b class=" icon-angle-down"></b></a></br>
+    <div class="block_kritics">
+      <% @kritics.each do |kritic| %>
+        <div class="vidguk show_h2">
+          <ul class="list-inline text-left">
+            <li><h3><%= link_to kritic.name, kritic_path, :class => "product" %></h3></li>
+            <li><div class="review-rating" data-score="<%= kritic.ocinka %>"></div></li>
+          </ul>
+          <p><%= kritic.recensiya %></p>
+          <p>
+            <span class="glyphicon glyphicon-thumbs-up"><%= kritic.get_likes.size %></span>
+            <span class="glyphicon glyphicon-thumbs-down"><%= kritic.get_dislikes.size %></span>
+          </p>
+          <div class="show_h2_content text-center">
+            <%= link_to "Подобається", like_kritic_path(kritic), class: "btn btn-default blue" %>
+            <%= link_to "Неподобається", dislike_kritic_path(kritic), class: "btn btn-default red" %><br>
+          </div>
+          <div class="text-right">
+            <%= link_to delete, kritic, method: :delete, data: { confirm: question } %> | <%= link_to edit, edit_kritic_path(kritic) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <a href="#" class="add_kritics" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><h3 class="text-left"><%= t ".kritic" %></h3><b class=" icon-angle-down"></b></a>
+  <div class="form_kritics">
+    <%= render 'form_kritics', kritic: @kritic %>
+  </div>
+  <div id="line"></div>
+</div>
+<div class="col-md-4 col-md-offset-4 back">
+  <div>
+      <a href="#" class="show_vidgucs" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><h2 class="text-left"><%= t ".vidguks" %></h2></b></a></br>
+    <div class="block_vidgucs">
+      <% @vidguks.each do |vidguk| %>
+        <div class="vidguk show_h2">
+          <ul class="list-inline text-left">
+            <li><h3><%= link_to vidguk.name, vidguk_path, :class => "product" %></h3></li>
+            <li><h3><%= vidguk.date %></h3></li>
+          </ul>
+          <p><%= vidguk.vidguk %></p>
+          <p>
+            <span class="glyphicon glyphicon-thumbs-up"><%= vidguk.get_likes.size %></span>
+            <span class="glyphicon glyphicon-thumbs-down"><%= vidguk.get_dislikes.size %></span>
+          </p>
+          <div class="text-right">
+            <%= link_to delete, vidguk, method: :delete, data: { confirm: question } %> | <%= link_to edit, edit_vidguk_path(vidguk) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <a href="#" class="add_vidgucs" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><h3 class="text-left"><%= t ".vidguk" %></h3><b class=" icon-angle-down"></b></a>
+  <div class="form_vidgucs">
+    <%= render 'form_vidguk', vidguk: @vidguk %>
+  </div>
+</div>
+ <script type="text/javascript">
+    $("#download").click(function(){
+      var download = confirm("<%= t ".question" %>");
+      if(!download){
+        window.event.cancelBubble = true;
+      }
+    });
+    $('.review-rating').raty({
+      readOnly: true,
+      score: function(){
+         return $(this).attr("data-score");
+      },
+      path: "/assets/"
+    });
+    $(".show_kritics").click(function(){
+      $(".block_kritics").slideToggle(200);
+    });
+    $(".show_vidgucs").click(function(){
+      $(".block_vidgucs").slideToggle(200);
+    });
+    $(".add_kritics").click(function(){
+      $(".form_kritics").slideToggle(200);
+    });
+    $(".add_vidgucs").click(function(){
+      $(".form_vidgucs").slideToggle(200);
+    });
+  </script>
+  <br><br>

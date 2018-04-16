@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+<div class="text-center back">
+  <h1 class="col-md-6 col-md-offset-3"><%= t ".title" %></h1><br><br>
+</div>
+<div class="container">
+  <div class="row">
+    <% @auths.each do |auth| %>
+      <div class="col-lg-3">
+        <div class="box-auth">
+          <div class="box-gray aligncenter">
+            <h3><%= link_to auth.auth, auth, :class => "product" %></h3>
+            <h4>
+            <% 
+            books = auth.book.split(',') 
+            if books.count > 1 
+              books.each do |book|
+                book_link = Book.search(book)
+                #if book_link.count > 1
+            %>
+                  <%= link_to book, books_path + "?utf8=✓&search=" + book + "&commit=Пошук", :class => "product" %><br/>
+              <% 
+                #end
+                end 
+            else %>
+               <%= link_to auth.book, books_path + "?utf8=✓&search=" + auth.book + "&commit=Пошук", :class => "product" %>
+            <% end %>
+
+            </h4>
+            <div class="icon">
+              <i class="fa fa-desktop fa-3x"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

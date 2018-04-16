@@ -1,0 +1,53 @@
+<div class="col-md-4 col-md-offset-4 back">
+<% write_message = t ".write_message" %>
+<p><%= link_to write_message, new_message_path, class: 'btn btn-default btn-primary button-background' %></p><br><br>
+<div class="row">
+  <div class="col-sm-3">
+    <ul class="nav nav-pills nav-stacked">
+      <%
+        inbox = t ".inbox"
+        sent = t ".sent"
+        trash = t ".trash"
+        question = t ".question"
+        clear = t ".clear"
+        inbox_class = ""
+        sent_class = ""
+        trash_class = ""
+        if params["box"] == "inbox"
+          inbox_class = "active"
+        elsif params["box"] == "sent"
+          sent_class = "active"
+        elsif params["box"] == "trash"
+          trash_class = "active"
+        end
+      %>
+
+      <%= mailbox_section inbox, @box, id: "inbox", class: inbox_class %>
+      <%= mailbox_section "#{sent}", @box, id: "sent", class: sent_class %>
+      <%= mailbox_section "#{trash}", @box, id: "trash", class: trash_class %>
+    </ul>
+  </div>
+
+  <div class="col-sm-9">
+  <% if @box == 'trash' %>
+    <p><%= link_to clear, empty_trash_conversations_path, class: 'btn btn-default btn-primary btn-block button-background btn-danger', method: :delete,
+                   data: {confirm: question} %></p>
+  <% end %>
+    <ul class="list-group">
+      <%= render partial: 'conversations/conversation', collection: @conversations %>
+    </ul>
+
+    <%= will_paginate %>
+  </div>
+</div>
+<script type="text/javascript">
+  $("#inbox").click(function(){
+    location = "?box=inbox";
+  });
+  $("#sent").click(function(){
+    location = "?box=sent";
+  });
+  $("#trash").click(function(){
+    location = "?box=trash";
+  });
+</script>

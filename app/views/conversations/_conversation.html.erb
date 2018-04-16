@@ -1,0 +1,24 @@
+<%
+  restore = t '.restore'
+  move = t ".move"
+  question = t ".question"
+  read = t ".read"
+%>
+<li class="list-group-item clearfix">
+  <% conversation.receipts_for(current_user).each do |receipt| %>
+    <b><%= t ".from" %>:</b> <%= receipt.message.sender.name %>
+  <% end %><br>
+  <b><%= t ".subject" %>:</b> <%= link_to conversation.subject, conversation_path(conversation) %>
+  <div class="btn-group-vertical pull-right">
+  <% if conversation.is_trashed?(current_user) %>
+    <%= link_to restore, restore_conversation_path(conversation), class: 'btn btn-default btn-primary btn-block button-background', method: :post %>
+  <% else %>
+    <%= link_to move, conversation_path(conversation), class: 'btn btn-default btn-primary btn-block button-background btn-danger', method: :delete, data: {confirm: question} %>
+    <% if conversation.is_unread?(current_user) %>
+      <%= link_to read, mark_as_read_conversation_path(conversation), class: 'btn btn-default btn-primary btn-block button-background', method: :post %>
+    <% end %>
+  <% end %>
+</div>
+  <p>
+    <small>(<span class="text-muted"><%= conversation.last_message.created_at.strftime("%-d %B %Y, %H:%M:%S") %></span>)</small></p>
+</li>

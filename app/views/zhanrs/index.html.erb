@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+<div class="text-center back">
+  <h1 class="col-md-6 col-md-offset-3"><%= t ".label_Z" %></h1><br>
+</div>
+<div class="container">
+  <div class="row">
+    <% @zhanrs.each do |zhanr| %>
+      <div class="col-lg-3">
+        <div class="box-zhanres">
+          <div class="box-gray aligncenter">
+            <h3><a href="/books?utf8=✓&search=<%= zhanr.zhanr %>&commit=Пошук" class="product"><%= zhanr.zhanr %></a></h3>
+            <div class="icon">
+              
+              <i class="fa fa-desktop fa-3x"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

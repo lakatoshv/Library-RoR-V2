@@ -1,0 +1,36 @@
+<% if session[:lang] == "ua" 
+    text ={
+      :h2 => "Забули свій пароль?",
+      :email => "Електронна пошта",
+      :submit => "Надіслати мені інструкції скидання пароляПідтвердити"
+    } 
+  elsif session[:lang] == "en" 
+    text ={
+      :h2 => "Forgot your password?",
+      :email => "Email",
+      :submit => "Send me reset password instructions"
+    } 
+  elsif session[:lang] == "ru"
+    text ={
+      :h2 => "Забыли пароль?",
+      :email => "Электронная почта",
+      :submit => "Прислать мне инструкции сброса пароля"
+    } 
+  end 
+%>
+<h2 class="col-md-6 col-md-offset-3"><%= text[:h2] %></h2>
+
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="field">
+    <label><%= text[:email] %></label><br />
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <div class="actions">
+    <input type="submit" name="submit" value=<%= text[:submit] %>>
+  </div>
+<% end %>
+
+<%= render "users/shared/links" %>

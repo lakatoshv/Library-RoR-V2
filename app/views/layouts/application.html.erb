@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= t ".title" %></title>
+    <link rel="shortcut icon" type="image/gif/png" href="<%=  Rails.public_path %>/images/books.png" />
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <script src="https://rawgit.com/mrdoob/three.js/master/build/three.min.js"></script>
+  <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/libs/stats.min.js"></script>
+  <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/CanvasRenderer.js"></script>
+  <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/Projector.js"></script>
+  <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/libs/tween.min.js"></script>7
+  <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/CSS3DRenderer.js"></script>
+  </head>
+
+  <body>
+  <div id="wrapper">
+    <header>
+      <div class="navbar navbar-default navbar-fixed-top navbar-static-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="navbar-collapse collapse ">
+            <ul class="nav navbar-nav">
+              <li><img src="<%=  Rails.public_path %>/images/book.png" width="48" height="48"/></li>
+              <li><a class="text-left" href=""><%= t ".name" %></a></li>
+              <%
+                auths = t ".auth"
+                zhanr = t ".zhanr"
+                books = t ".book"
+                exit_user = t ".exit"
+                registration = t ".registration"
+                autorisation = t ".autorisation"
+                messages = t ".messages"
+              %>
+              <li><%= link_to auths, auths_path %></li>
+              <li><%= link_to zhanr, zhanrs_path %></li>
+              <li><%= link_to books, books_path %></li>
+              <% if user_signed_in? %>
+                <li><%= link_to current_user.email, profile_path %></li>
+                <% 
+                  if current_user.email != "admin@example.com" && current_user.mailbox.inbox.count > 0
+                    messages = messages + " + #{current_user.mailbox.inbox.count}"
+                %>
+                  <li><%= link_to messages, conversations_path, class: "btn-warning" %></li>
+                <% elsif current_user.email == "admin@example.com" %>
+                  <li><%= link_to messages, conversations_path %></li>
+                <% end %>
+                <li><%= link_to exit_user, destroy_user_session_path, method: :delete  %></li>
+              <% else %>
+                <li class="active"><%= link_to registration, sign_up_path %></li>
+                <li><%= link_to autorisation, new_user_session_path %></li>
+              <% end %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><%= t ".lang" %><b class=" icon-angle-down"></b></a>
+                <ul class="dropdown-menu">
+                  <% 
+                    ua = t ".ua"
+                    ru = t ".ru"
+                    en = t ".en"
+                  %>
+                  <li>
+                    <%= link_to_unless_current ua, locale: "ua" %>
+                    <!--<img src="../images/langs/ua.png">-->
+                  </li>
+                  <li>
+                    <%= link_to_unless_current ru, locale: "ru"%>
+                    <!--<img src="../images/langs/ru.png">-->
+                  </li>
+                  <li>
+                    <%= link_to_unless_current en, locale: "en" %>
+                    <!--<img src="../images/langs/en.png">-->
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a class="search-btn" ><i class="glyphicon glyphicon-search"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div class="search-box">
+            <div class="search-for-block">
+                <%= t ".look_in" %> розділі
+                <select id="search_in" name="search_in">
+                  <% if cookies[:search_in] && cookies[:search_in] == "auths" %>
+                    <option value="books"><%= t ".books" %></option>
+                    <option selected value="auths"><%= t ".auths" %></option>
+                  <% else %>
+                    <option selected value="books"><%= t ".books" %></option>
+                    <option value="auths"><%= t ".auths" %></option>
+                  <% end %>
+                </select>
+                <%= text_field_tag :search, params[:search], :id => "search", :class => "search-txt" %>
+                <input type="submit" id="submit" class="btn submit button-background" value="<%= t ".submit" %>" %>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>  
+  <br><br><br><br><br><br><br>
+  <%= yield %>
+  <br><br><br>
+  <div class="clear"></div>
+  <div id="wrapper" class="navbar-static-bottom row-fluid">
+    <div class="navbar-inner">
+      <div class="container">
+        <div id="footer" class="navbar navbar-default navbar-static-bottom col-md-6 col-md-offset-3">
+          <ul class="nav navbar-nav list-inline">
+            <%
+              about_us = t ".about_us"
+              about_site = t ".about_site"
+              holders = t ".holders"
+              contact_us = t ".contact_us"
+            %>
+            <li><h4><%= link_to about_site, abouts_about_program_path %></h4></li>
+            <li><h4><%= link_to about_us, abouts_about_us_path %></h4></li>
+            <li><h4><%= link_to holders, for_holders_path %></h4></li>
+            <li><h4><%= link_to contact_us, new_message_path %></h4></li>
+          </ul>
+        </div>
+      </div>
+    </div><% locale = I18n.locale %>
+  </div>
+  <script type="text/javascript">
+  $(document).ready(function(){
+      function cheked(select) {
+        return select.val();
+      };
+      $("#submit").click(function(){
+        search_in=cheked($("#search_in"));
+        search=document.getElementById('search').value;
+        document.cookie = "search_in=" + search_in;
+        locale = "<%= locale %>"
+        location =  search_in + "?utf8=✓&search=" + search + "&commit=Пошук";
+      });
+      $(".search-btn").click(function(){
+        $('.search-box').fadeIn('slow','linear');
+      });
+      $(window).scroll(function () {
+                if ($(this).scrollTop() > 125) {
+                    $('.navbar-static-top').fadeOut();
+                    $(".sidenav").css("top", "0");
+                    $(".hamburger").css("top", "10px");
+                } else {
+                    $('.navbar-static-top').fadeIn();
+                    $(".sidenav").css("top", "110px");
+                    $(".hamburger").css("top", "110px");
+                    
+                }
+            });
+        });
+  </script>
+  </body>
+</html>

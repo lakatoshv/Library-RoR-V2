@@ -1,0 +1,512 @@
+<p id="notice"><%= notice %></p>
+<div class="back">
+  <div class="text-center">
+    <h1 class="col-md-6 col-md-offset-3"><%= t ".h1" %></h1>
+  </div>
+  <br>
+</div>
+<% if @books.count > 1 %> 
+<div class="back">
+  <div class="text-left">
+    <ul class="list-inline">
+      <li><%= t ".sort_by" %></li>
+      <li>
+        <select id="sort" name="sort">
+          <option <% if cookies[:sort] %><% if cookies[:sort] == "title" %> selected <% end %><% end %> value ="title"><%= t ".by_title" %></option>
+          <option <% if cookies[:sort] %><% if cookies[:sort] == "auth" %> selected <% end %><% end %> value="auth"><%= t ".by_auth" %></option>
+          <option <% if cookies[:sort] %><% if cookies[:sort] == "zhanr" %> selected <% end %><% end %> value="zhanr"><%= t ".by_zhanr" %></option>
+          <option <% if cookies[:sort] %><% if cookies[:sort] == "likes_qty" %> selected <% end %><% end %> value="likes_qty"><%= t ".by_likes" %></option>
+          <option <% if cookies[:sort] %><% if cookies[:sort] == "dislikes_qty" %> selected <% end %><% end %> value="dislikes_qty"><%= t ".by_dislikes" %></option>
+        </select>
+      </li>
+      <li><%= t ".type_sort" %></li>
+      <li>
+        <select id="type_sort" name="type_sort">
+          <option <% if cookies[:type_sort] %><% if cookies[:type_sort] == "asc" %> selected <% end %><% end %> value="asc"><%= t ".asc" %></option>
+          <option <% if cookies[:type_sort] %><% if cookies[:type_sort] == "desc" %> selected <% end %><% end %> value="desc"><%= t ".desc" %></option>
+        </select>
+      </li>
+      <li><a id="sorting" class="btn btn-default button-background" href=""><%= t ".sort" %></a></li>
+    </ul>
+  </div>
+</div>
+<% end %>
+<!--
+<div class="container">
+  <div class="row">
+    < % @books.each do |book| %>
+      <div class="col-lg-3">
+        <div class="box">
+          <div class="box-gray aligncenter">
+            <h3>< %= link_to book.title, book, class: "product" %></h3>
+            <h4>< %= link_to book.auth, auths_path + "?utf8=✓&search=" + book.auth + "&commit=Пошук", :class => "product" %></h4>
+            <div class="icon">
+              <i class="fa fa-desktop fa-3x"></i>
+            </div>
+            <div class="product-item">
+              < %= image_tag book.image_url.url(:medium), :class => "img-thumbnail" %>
+              <div class="product-minidescription">
+                <br><p>< %= book.mini_description %></p><br><br>
+                <a class="text-center" style="font-size: 20px;" ><i class="glyphicon glyphicon-search"></i></a>
+              </div>
+            </div>
+            <div class="buttons-bottom">
+              < % 
+                read = t ".read"
+                read += "(" + book.language + ")"
+                download = t ".download"
+                download += "(" + book.rozshirennya + ")" 
+              %>
+              < %= link_to read, read_book_path(book), class: "btn btn-default btn-block button-background" %>
+              < %=form_for :download, url:  downl_path do |f| %>
+                < %= f.text_field :url_to_book, :value => book.name_of_file + "." + book.rozshirennya, :type => "hidden" %>
+                < %= f.submit download, class: "btn btn-default btn-block button-background", :id => "download" %>
+              < % end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  < % end %>
+</div>
+-->
+<% if @books.count > 5 %>
+  <div class="col-md-6 col-md-offset-3 text-center back">
+    <%= will_paginate @books %>
+  </div>
+<% end %>
+<script type="text/javascript">
+  function cheked(select) {
+    // берём значение из select и что-то с ним делаем
+    return select.val();
+  };
+  $("#sorting").click(function(){
+    value_sort = cheked($("#sort"));
+    type_sort = cheked($("#type_sort"));
+    document.cookie = "sort=" + value_sort;
+    document.cookie = "type_sort=" + type_sort; 
+    location = "?direction="+type_sort+"&page=1&sort="+value_sort;
+  });
+</script>
+
+<div id="container"></div>
+
+<div id="menu" >
+  <button id="table" OnClick="init('table');">Таблиця</button>
+  <button id="helix" OnClick="init('helix');">Спіраль</button>
+</div>
+<div id="nav-menu">
+  <button><span class="glyphicon glyphicon-chevron-left" OnClick="move('chevron-left');"> </span></button>
+  <button><span class="glyphicon glyphicon-arrow-left" OnClick="move('left');"> </span></button>
+  <button><span class="glyphicon glyphicon-arrow-up" OnClick="move('up');"> </span></button>
+  <button><span class="glyphicon glyphicon-arrow-down" OnClick="move('down');"> </span></button>
+  <button><span class="glyphicon glyphicon-arrow-right" OnClick="move('right');"> </span></button>
+  <button><span class="glyphicon glyphicon-chevron-right" OnClick="move('chevron-right');"> </span></button>
+</div>
+  <script>
+  var books = <%=  @books.to_json.html_safe %>;
+  var config = {
+        //controls_target:    [-2600, 0, 1300],
+        controls_target:    [0, 0, 0],
+        controls_allow_move:  true,
+        controls_allow_zoom:  true,
+  };
+  var bookid = 0;
+  var targets = { table: [], sphere: [], helix: [], grid: [] };
+    var objects = [];
+    var intersects;
+    var arrlength = Object.keys( books ).length;
+    var numCubes = 10;
+    var container, stats;
+    var camera, scene, renderer, controls;
+    var textureLoader = new THREE.TextureLoader();
+    var raycaster;
+    var mouse;
+    var isMouseDown = false,
+      onMouseDownPosition, onMouseDownTheta = 45,
+      onMouseDownPhi = 60,
+      phi = 60,
+    camerapos = 0,  theta = 0,
+      radious = 1600,
+      count=0;
+    var lichilnick = 0;
+    var startX = -1800, startY = 800, x = 0, y = 0, z = 0;
+    var typeDef = "helix";
+    init(typeDef);
+    animate();
+    function ChangeImage(id,image){
+                var el=document.getElementById(id);
+                el.src=image;
+        }
+    function init(type) {
+      typeDef = type; 
+      container = document.createElement('div');
+      document.getElementById( 'container' ).remove()
+      var d = document.createElement('div');
+      d.id ='container';
+      document.body.appendChild(d);
+      document.getElementById( 'container' ).appendChild(container);
+      camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
+      camera.position.y = 360;
+      if(type === "table") camera.position.z = 555; 
+      else camera.position.z = 1500;
+      raycaster = new THREE.Raycaster();
+      mouse = new THREE.Vector2();
+      stats = new Stats();
+      container.appendChild(stats.dom);
+
+      createScene(type);
+      onMouseDownPosition = new THREE.Vector2();
+      document.addEventListener('mousedown', onDocumentMouseDown, false);
+      document.addEventListener('mousedown', onMouseDown, false);
+      //document.addEventListener('mousemove', onDocumentMouseMove, false);
+      //document.addEventListener('mouseup', onDocumentMouseUp, false);
+      window.addEventListener('resize', onWindowResize, false);
+      if(type === "helix"){
+      controls = new THREE.OrbitControls( camera, renderer.domElement );
+        controls.rotateSpeed = 10;
+        controls.target = new THREE.Vector3( config['controls_target'][0], config['controls_target'][1], config['controls_target'][2] );
+        controls.noRotate = config['controls_allow_move'] ? false : true;
+        controls.minDistance = config['controls_allow_zoom'] ? 700 : 2600; // when min-max equal zoom is blocked
+        controls.maxDistance = 2600; // 2900
+        controls.minPolarAngle = d2r(90); // equal min max blocks vertical panning
+        controls.maxPolarAngle = d2r(90);
+  
+        controls.addEventListener( 'change', render );
+      }
+      /*
+        var button = document.getElementById( 'table' );
+        button.addEventListener( 'click', function ( event ) {
+          transform( targets.table, 2000 );
+        }, false );
+        var button = document.getElementById( 'helix' );
+        button.addEventListener( 'click', function ( event ) {
+          transform( targets.helix, 2000 );
+        }, false );
+        transform( targets.helix, 2000 );
+      */
+    }
+
+
+    function createGeometry(id, bookname, auth, img, minidescr) {
+      /*
+      var loader = new THREE.TextureLoader();
+      var mesh = loader.load('book.jpg', function ( texture ) {
+        var geometry = new THREE.BoxGeometry(200, 300, 50 );
+        var material = new THREE.MeshPhongMaterial({map: texture});
+        mesh = new THREE.Mesh(geometry, material);
+        mesh.position.set( x, y, 0 );
+        scene.add(mesh);
+      }); 
+      */
+      var cubeTexture = textureLoader.load(img);
+      var geometry = new THREE.BoxBufferGeometry(200, 300, 50);
+      var object = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+        color: Math.random() * 0xffffff,
+        map: cubeTexture,
+        active: false,
+        type: "book",
+        id: `${id}`
+      }));
+      books[object.id] = {
+        "name": bookname,
+        "author": auth,
+        "img": img,
+        "minidescription": minidescr
+      }
+      //alert(id + "      " + object.id)
+      object.position.x = x;
+      object.position.y = y;
+      if(typeDef === "table") object.position.z = 0;
+      else object.position.z = z;
+      return object;
+    }
+
+    function createScene(type) {
+      renderer = new THREE.WebGLRenderer({
+        antialias: true
+      });
+      renderer.autoClear = true;
+      renderer = new THREE.CanvasRenderer();
+      renderer.setClearColor(0x111111);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      container.appendChild(renderer.domElement);
+      scene = new THREE.Scene();
+      if(type === "table"){
+        for (var i = 0; i < arrlength; i++) {
+          if(lichilnick == 0){
+            x = startX;
+            if(i == 0) y = startY;
+          }
+          var geometry = createGeometry(i, books[i].title, books[i].auth, books[i].image_url, books[i].mini_description);
+          scene.add(geometry);
+          //targets.table.push( geometry );
+          objects.push( geometry );
+          x = x + 500;
+          lichilnick++;
+          if(lichilnick == 8) {
+            var woodTexture = textureLoader.load('wood.jpg');
+            var geometry = new THREE.BoxBufferGeometry(5000, 60, 50);
+            var polka = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+              color: Math.random() * 0xffffff,
+              map: woodTexture,
+            }));
+            polka.position.x = 0;
+            polka.position.y = y - 180;
+            polka.position.z = 0;
+            scene.add(polka);
+            //targets.table.push( polka );
+            objects.push( polka );
+            lichilnick = 0;
+            y = y  - 550;
+          }
+        }
+      }
+      else if(type === "helix"){
+        var cylindrical = new THREE.Cylindrical();
+        for ( var i = 0; i < arrlength; i ++ ) {
+          var thetat = i * 0.175 + Math.PI;
+          var yt = - ( i * 8 ) + 200;
+          var object = new THREE.Object3D();
+          cylindrical.set( 400, thetat, yt );
+          object.position.setFromCylindrical( cylindrical );
+          x = object.position.x * 2;
+          y = object.position.y *1.2;
+          z = object.position.z * 2;
+          //title auth image_url mini_description
+          var geometry = createGeometry(i, books[i].title, books[i].auth, books[i].image_url, books[i].mini_description);
+          objects.push( geometry );
+          scene.add(geometry);
+          //targets.helix.push( geometry );
+        }
+      }
+    }
+    
+    
+    function transform( targets, duration ) {
+        TWEEN.removeAll();
+        for ( var i = 0; i < objects.length; i ++ ) {
+          var object = objects[ i ];
+          var target = targets[ i ];
+          new TWEEN.Tween( object.position )
+            .to( { x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration )
+            .easing( TWEEN.Easing.Exponential.InOut )
+            .start();
+          new TWEEN.Tween( object.rotation )
+            .to( { x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration )
+            .easing( TWEEN.Easing.Exponential.InOut )
+            .start();
+        }
+        new TWEEN.Tween( this )
+          .to( {}, duration * 2 )
+          .onUpdate( render )
+          .start();
+    }
+    
+    
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    function onDocumentMouseDown(event) {
+      isMouseDown = true;
+      onMouseDownTheta = theta;
+      onMouseDownPhi = phi;
+      onMouseDownPosition.x = event.clientX;
+      onMouseDownPosition.y = event.clientY;
+      mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+      mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      intersects = raycaster.intersectObjects(scene.children); //if mouse intersects a cube
+      //theta = /*onMouseDownTheta*/ -20;
+      //theta = intersects[0].object.position.z - 10;
+      if (intersects.length > 0 /*&& intersects[0].object.type == "book"*/ ) {
+        if(intersects[0].object.id == bookid) {
+          theta -= 15;
+        }
+        else{
+          theta += 200;
+        }
+        if(typeDef === "table"){
+          new TWEEN.Tween(intersects[0].object.position).to(
+          {
+            z: theta
+          }, 2000)
+          .easing(TWEEN.Easing.Elastic.Out).start(); //moves cube
+          count++;
+        }
+          if(intersects[0].object.id != bookid){
+
+            var id = intersects[0].object.id
+            bookid = id;
+            document.getElementById("modal-author").innerHTML = books[id].author + id;
+            document.getElementById("modal-title").innerHTML = books[id].name + " № " + id;
+            document.getElementById("leftside-author").innerHTML = books[id].author + id;
+            document.getElementById("leftside-title").innerHTML = books[id].name + " № " + id;
+            document.getElementById("cover-author").innerHTML = books[id].author + id;
+            document.getElementById("cover-title").innerHTML = books[id].name + " № " + id;
+            //ChangeImage("body-img", books[id].img);
+            var r=Math.floor(Math.random() * (256));
+            var g=Math.floor(Math.random() * (256));
+            var b=Math.floor(Math.random() * (256));
+            var color='#' + r.toString(16) + g.toString(16) + b.toString(16);
+            $(".book-1 .bk-front > div, .book-1 .bk-back, .book-1 .bk-left, .book-1 .bk-front:after").css("background-color", color);
+            
+            $(".book-1").css("background-image", "url(" + books[id].img + ")");
+            document.getElementById("body-text").firstChild.nodeValue = books[id].minidescription;
+            document.getElementById('click').click();
+
+          }
+          else{
+            bookid = 0;
+          }
+      }
+      
+    }
+    function onMouseDown(event) {
+    }
+    /*
+    function onDocumentMouseMove(event) {
+        //theta = -((event.clientX - onMouseDownPosition.x) * 0.5) + onMouseDownTheta;
+        var halfwidth = window.innerWidth/2;
+        var y = event.clientY;
+        if(y < halfwidth){
+          scene.rotation.y -= 120;
+        }
+        else{
+          scene.rotation.y += 120;
+        }
+        document.getElementById("y").firstChild.nodeValue = y;
+        document.getElementById("halfwidth").firstChild.nodeValue = halfwidth;
+    }
+    */
+    function move(nav){
+      if(nav === "left") scene.rotation.y += 120;
+      else if(nav === "right") scene.rotation.y -= 120;
+      else if(nav === "up") scene.rotation.x += 0.05;
+      else if(nav === "down") scene.rotation.x -= 0.05;
+      
+      else if(nav === "chevron-left") {
+        scene.rotation.y += 120;
+        scene.rotation.x -= 0.05;
+      }
+      else if(nav === "chevron-right") {
+        scene.rotation.y -= 120;
+        scene.rotation.x += 0.05;
+      }
+      
+    }
+    function onDocumentMouseUp(event) {
+      isMouseDown = false;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      //TWEEN.update();
+      if(typeDef === "helix") controls.update();
+      render();
+      stats.update();
+    }
+
+
+    function render() {
+      TWEEN.update();
+      //theta += 0.1;
+      if(typeDef === "table"){
+        camera.position.x = radious * Math.sin(THREE.Math.degToRad(camerapos));
+        camera.position.y = radious * Math.sin(THREE.Math.degToRad(camerapos));
+        camera.position.z = radious * Math.cos(THREE.Math.degToRad(camerapos));
+      }
+      camera.lookAt(scene.position);
+      renderer.render(scene, camera);
+    }
+    function d2r(degrees){
+      return degrees * Math.PI / 180;
+    }
+
+  </script>
+<button type="button" id="click" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="display: none;">
+</button>
+  <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+  <!--
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Modal title</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+  -->
+      <div class="modal-body" id="modal-body">
+    <!--
+    <h3 class="modal-title" id="modal-author">Modal title</h3>
+    <div id="body-image"><img id="body-img" src="" height="500" wight="200"/></div>
+    <p id="body-text">...</p>
+    -->
+    <center>
+    <div class="main">
+        <ul id="bk-list" class="bk-list clearfix">
+          <li>
+            <div class="bk-book book-1">
+              <div class="bk-front">
+                <div class="bk-cover-back"></div>
+                <div class="bk-cover">
+                  <h2>
+                    <span id="cover-author">...</span>
+                    <span id="cover-title">...</span>
+                  </h2>
+                </div>
+              </div>
+              <div class="bk-page">
+                <div class="bk-content">
+                  <h2 id="modal-author">.</h2>
+                  <h2 id="modal-title">Назва книги</h2>
+                </div>
+                <div class="bk-content">
+                  <p id="body-text">...</p><br/>
+                  <a href="#">Детальніше...</a>
+                </div>
+                <div class="bk-content bk-content-current">
+                  <p>Red snapper Kafue pike fangtooth humums's slipmouth, salmon cutlassfish; swallower European perch mola mola sunfish, threadfin bream. Billfish hog sucker trout-perch lenok orbicular velvetfish. Delta smelt striped bass, medusafish dragon goby starry flounder cuchia round whitefish northern anchovy spadefish merluccid hake cat shark Black pickerel. Pacific cod.</p>
+                </div>
+              </div>
+              <div class="bk-back">
+                <p>In this nightmare vision of cats in revolt, fifteen-year-old Alex and his friends set out on a diabolical orgy of robbery, rape, torture and murder. Alex is jailed for his teenage delinquency and the State tries to reform him - but at what cost?</p>
+              </div>
+              <div class="bk-right"></div>
+              <div class="bk-left">
+                <h2>
+                  <span id="leftside-author">Автор</span>
+                  <span id="leftside-title">Назва книги</span>
+                </h2>
+              </div>
+              <div class="bk-top"></div>
+              <div class="bk-bottom"></div>
+            </div>
+          </li>
+          </ul>
+        <div class="bookshelf"></div>
+      </div>
+      </center>
+    </div>
+    <script>
+      $(function() {
+
+        Books.init();
+
+      });
+    </script>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Переглянути</button>
+    <button type="button" class="btn btn-primary">Читати онлайн</button>
+    <button type="button" class="btn btn-primary">Слухатин</button>
+    <button type="button" class="btn btn-primary">Скачати</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+      </div>
+    </div>
+  </div>
+</div>

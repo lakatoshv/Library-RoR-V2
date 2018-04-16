@@ -1,0 +1,29 @@
+<div class="col-md-4 col-md-offset-4 back">
+<%= t ".message" %>
+<% date = "" %>
+<div class="panel panel-default show_h2">
+    <% @conversation.receipts_for(current_user).each do |receipt| %>
+      <div class="panel-heading"><b><%= t ".from" %>:</b> <%= receipt.message.sender.name %></div>
+      <div class="panel-heading"><b><%= t ".subject" %>:</b> <%= @conversation.subject %></div>
+      <div class="panel-body">
+        <div class="messages">
+            <% message = receipt.message %>
+              <% date =  message.created_at.strftime("%-d %B %Y, %H:%M:%S") %>
+            <b><%= t ".message" %>:</b> <%= message.body %><br>
+        </div>
+      </div>
+      <div class="panel-heading"><b><%= t ".date" %>:</b> <%= date %></div><br><br>
+    <% end %>
+  <%= form_tag reply_conversation_path(@conversation), method: :post do %>
+    <%
+      answer = t ".answer"
+      write = t ".write"
+      send_msg = t ".send"
+    %>
+    <b><%= answer %>:</b> 
+    <div class="form-group">
+      <%= text_area_tag 'body', nil, cols: 3, class: 'form-control', placeholder: write, required: true %>
+    </div>
+    <%= submit_tag send_msg, class: 'btn btn-primary' %>
+  <% end %>
+</div>

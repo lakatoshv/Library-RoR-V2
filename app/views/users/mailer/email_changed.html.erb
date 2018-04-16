@@ -1,0 +1,27 @@
+<% if session[:lang] == "ua" 
+    text ={
+      :p1 => "Вітаємо",
+      :p2 => "Ми зв'язалися з вами, щоб повідомити вас, що ваша адреса електронної пошти змінюється на",
+      :p3 => "Ми зв'язалися з вами, щоб повідомити вас, що ваша адреса електронної пошти була змінена на"
+    } 
+  elsif session[:lang] == "en" 
+    text ={
+      :p1 => "Hello",
+      :p2 => "We're contacting you to notify you that your email is being changed to",
+      :p3 => "We're contacting you to inform you that your email address has been changed to"
+    } 
+  elsif session[:lang] == "ru"
+    text ={
+      :p1 => "Здравствуйте",
+      :p2 => "Мы связались с вами, чтобы сообщить вам, что ваш адрес электронной почты меняется на",
+      :p3 => "Мы связались с вами, чтобы сообщить вам, что ваш адрес электронной почты было изменено на"
+    } 
+  end 
+%>
+<p><%= text[:p1] %> <%= @email %>!</p>
+
+<% if @resource.try(:unconfirmed_email?) %>
+  <p><%= text[:p2] %> <%= @resource.unconfirmed_email %>.</p>
+<% else %>
+  <p><%= text[:p3] %> <%= @resource.email %>.</p>
+<% end %>
