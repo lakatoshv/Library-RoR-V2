@@ -1,0 +1,10 @@
+<div class="back">
+  <h1 class="col-md-6 col-md-offset-3 text-center back"><%= t ".h1" %></h1>
+  <%= render 'form', vidguk: @vidguk %>
+  	<% 
+  		show = t ".show"
+  		back = t ".show"
+  	%>
+	<%= link_to show, @vidguk %> |
+	<%= link_to back, vidguks_path %>
+</div>

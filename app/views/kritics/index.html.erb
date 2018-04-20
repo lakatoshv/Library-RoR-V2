@@ -1,0 +1,66 @@
+<% if session[:lang] == "ua" 
+    text ={
+      :h1 => "Критика",
+      :label_A => "Автор",
+      :label_B => "Назва книги",
+      :label_O => "Оцінка",
+      :show => "Показати",
+      :edit => "Редагувати",
+      :delete => "Видалити",
+      :question => "Ви впевнені?",
+      :new => "Додати новий відгук",
+      :back => "Назад"
+    } 
+  elsif session[:lang] == "en" 
+    text ={
+      :h1 => "Kritics",
+      :label_A => "Author",
+      :show => "Show",
+      :edit => "Edit",
+      :delete => "Remove",
+      :question => "Are you sure?",
+      :new => "Add new review",
+      :back => "Back"
+    } 
+  elsif session[:lang] == "ru"
+    text ={
+      :h1 => "Критика",
+      :label_A => "Автор",
+      :show => "Показать",
+      :edit => "Редактировать",
+      :delete => "Удалить",
+      :question => "Вы уверены?",
+      :new => "Добавить новий отзив",
+      :back => "Назад"
+    } 
+  end 
+%>
+<p id="notice"><%= notice %></p>
+<div class="text-center back">
+  <h1 class="col-md-6 col-md-offset-3"><%= text[:h1] %></h1></br>
+  <h2 class="col-md-6 col-md-offset-3 back"><%= @title %></h2>
+</div>
+<div class="container">
+  <div class="row">
+    <% @kritics.each do |kritic| %>
+      <div class="col-lg-3">
+        <div class="box">
+          <div class="box-gray aligncenter">
+            <h3><%= link_to kritic.name, kritic, :class => "product" %></h3>
+            <h4><a href="/books?utf8=✓&search=<%= kritic.title_book %>&commit=Пошук" class="product"><%= kritic.title_book %></a></h4>
+            <div class="icon">
+              
+              <i class="fa fa-desktop fa-3x"></i>
+            </div>
+            <p>
+              <%= kritic.ocinka %><br>
+              <%= link_to text[:delete], kritic, method: :delete, data: { confirm: text[:question] } %> | <%= link_to text[:edit], edit_kritic_path(kritic) %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+

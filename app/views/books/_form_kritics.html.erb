@@ -1,0 +1,67 @@
+  <%= form_for(kritic) do |f| %>
+    <% if kritic.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(kritic.errors.count, "error") %> prohibited this kritic from being saved:</h2>
+        <ul>
+          <% kritic.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <% if user_signed_in? %>
+      <% name_user = current_user.email %>
+      <div class="form-group">
+        <label class="col-xs-2 control-label"><%= t ".name" %></label>
+        <%= f.text_field :name, :class => "form-control", :value => name_user%>
+      </div>
+      <div class="form-group">
+        <%= f.text_field :title_book, :value => @book.title, :class => "form-control", :type => "hidden" %>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-2 control-label"><%= t ".recensiya" %></label>
+        <%= f.text_field :recensiya, :class => "form-control" %>
+      </div>
+      <div id="rating-form" class="form-group">
+        <label class="col-xs-2 control-label"><%= t ".ocinka" %></label>
+      </div>
+      <div class="actions">
+        <% 
+          submit = t ".submit" 
+          back = t ".back"
+        %>
+        <%= f.button submit, class: "btn btn-default btn-primary btn-block button-background" %>
+      </div>
+    <% else %>
+      <div class="alert alert-danger">
+        <strong><%= t ".message" %></strong>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-2 control-label"><%= t ".name" %></label>
+        <%= f.text_field :name, :class => "form-control", :disabled => "disabled" %>
+      </div>
+      <div class="form-group">
+        <%= f.text_field :title_book, :value => @book.title, :class => "form-control", :type => "hidden", :disabled => "disabled"  %>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-2 control-label"><%= t ".recensiya" %></label>
+        <%= f.text_field :recensiya, :class => "form-control", :disabled => "disabled"  %>
+      </div>
+      <div id="rating-form" class="form-group">
+        <label class="col-xs-2 control-label"><%= t ".ocinka" %></label>
+      </div>
+      <div class="actions">
+        <% 
+          submit = t ".submit" 
+          back = t ".back"
+        %>
+        <%= f.button submit, class: "btn btn-default btn-primary btn-block button-background", :disabled => "disabled" %>
+      </div>
+    <% end %>
+  <% end %>
+  <script type="text/javascript">
+    $('#rating-form').raty({
+      path: "/assets/",
+      scoreName: "kritic[ocinka]"
+    });
+  </script>

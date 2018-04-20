@@ -1,0 +1,5 @@
+pirate:
+  time:
+    formats:
+      short: "%H"
+      long: "%H"

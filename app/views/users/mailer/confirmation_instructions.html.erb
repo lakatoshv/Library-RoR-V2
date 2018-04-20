@@ -1,0 +1,25 @@
+<% if session[:lang] == "ua" 
+    text ={
+      :h2 => "Вітаємо",
+      :p => "Ви можете підтвердити свій аккаунт електронної пошти через посилання нижче:",
+      :confirm => "Підтвердити мій аккаунт"
+    } 
+  elsif session[:lang] == "en" 
+    text ={
+      :h2 => "Resend confirmation instructions",
+      :p => "You can confirm your account email through the link below:",
+      :confirm => "Confirm my account"
+    } 
+  elsif session[:lang] == "ru"
+    text ={
+      :h2 => "Добро пожаловать",
+      :p => "Вы можете подтвердить свой аккаунт электронной почты по ссылке ниже:",
+      :confirm => "Подтвердить мой аккаунт"
+    } 
+  end 
+%>
+<p><%= text[:h2] %> <%= @email %>!</p>
+
+<p><%= text[:p] %></p>
+
+<p><%= link_to text[:confirm], confirmation_url(@resource, confirmation_token: @token) %></p>

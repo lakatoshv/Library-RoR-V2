@@ -1,0 +1,55 @@
+<% if session[:lang] == "ua" 
+    @text ={
+      :h2 => "Реєстрація нового користувача",
+      :email => "Електронна пошта",
+      :password => "Пароль",
+      :password_confirmation => "Підтвердження паролю",
+      :submit => "Зареєструватися"
+    } 
+  elsif session[:lang] == "en" 
+    @text ={
+      :h2 => "Sign up new User",
+      :email => "Email",
+      :password => "Password",
+      :password_confirmation => "Password confirmation",
+      :submit => "Sign up"
+    } 
+  elsif session[:lang] == "ru"
+    @text ={
+      :h2 => "Регистрация нового пользователя",
+      :email => "Электронная почта",
+      :password => "Пароль",
+      :password_confirmation => "Подтверждение пароля",
+      :submit => "Зарегистрироваться"
+    }
+  end 
+%>
+<h2 class="col-md-6 col-md-offset-3 text-center"><%= text[:h2] %></h2>
+<div  class="col-md-4 col-md-offset-4">
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= devise_error_messages! %>
+    <div class="field">
+      <label><%= @text[:email] %></label><br />
+      <%= f.email_field :email, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <label><%= text[:password] %></label><br/>
+      <% if @minimum_password_length %>
+      <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %><br />
+      <%= f.password_field :password, autocomplete: "off" %>
+    </div>
+
+    <div class="field">
+      <label><%= text[:password_confirmation] %></label> <br />
+      <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    </div>
+
+    <div class="actions">
+      <input type="submit" name="submit" value=<%= text[:submit] %>>
+    </div>
+  <% end %>
+
+  <%= render "users/shared/links" %>
+</div>

@@ -1,0 +1,37 @@
+<div class="col-md-4 col-md-offset-4 back">
+  <p id="notice"><%= notice %></p>
+  <div class="show_h2 text-center">
+
+    <p>
+      <strong><%= @vidguk.name %></strong>
+    </p>
+  </div> 
+  <div class="show_h2_content">
+    <p>
+      <strong><%= t ".title_book" %></strong>
+      <%= @vidguk.title_book %>
+    </p>
+    <p>
+      <strong><%= t ".ocinka" %></strong>
+      <%= @vidguk.vidguk %>
+    </p>
+    <p>
+      <strong><%= t ".recensiya" %></strong>
+      <%= @vidguk.date %>
+    </p>
+    <p>
+      <span class="glyphicon glyphicon-thumbs-up"><%= @vidguk.get_likes.size %></span>
+      <span class="glyphicon glyphicon-thumbs-down"><%= @vidguk.get_dislikes.size %></span>
+    </p>
+  </div>
+  <div class="show_h2_content text-center">
+    <%= link_to "Подобається", like_vidguk_path(@vidguk), class: "btn btn-default blue" %>
+    <%= link_to "Неподобається", dislike_vidguk_path(@vidguk), class: "btn btn-default red" %><br>
+    <%
+      edit = t ".edit"
+      back = t ".back"
+    %>
+    <% if @vidguk.name == current_user.email %> <%= link_to edit, edit_vidguk_path(@vidguk) %> | <% end %>
+	<%= link_to back, vidguks_path %>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<% if session[:lang] == "ua" 
+    text ={
+      :h2 => "Редагування",
+      :email => "Електронна пошта",
+      :div => "В даний час чекають підтвердження для:",
+      :password => "Пароль",
+      :leave => "Залиште порожнім, якщо ви не хочете, щоб змінити його",
+      :password_confirmation => "Підтвердження паролю",
+      :current_password => "Поточний пароль",
+      :need => "нам потрібен поточний пароль, щоб підтвердити зміни",
+      :submit => "Оновити",
+      :cancel => "Отменить мою учетную запись",
+      :question => "Ви впевнені?",
+      :back => "Назад"
+    } 
+  elsif session[:lang] == "en" 
+    text ={
+      :h2 => "Edit",
+      :email => "Email",
+      :div => "Currently waiting confirmation for:",
+      :password => "Password",
+      :leave => "leave blank if you don't want to change it",
+      :password_confirmation => "Password confirmation",
+      :current_password => "Current password",
+      :need => "we need your current password to confirm your changes",
+      :submit => "Update",
+      :cancel => "Cancel my account",
+      :question => "Are you sure?",
+      :back => "Back"
+    } 
+  elsif session[:lang] == "ru"
+    text ={
+      :h2 => "Редактирование",
+      :email => "Электронная почта",
+      :div => "Ожидание в настоящий момент для:",
+      :password => "Пароль",
+      :leave => "Оставьте поле пустым, если вы не хотите его менять",
+      :password_confirmation => "Подтверждение пароля",
+      :current_password => "Текущий пароль",
+      :need => "нам нужен ваш текущий пароль для подтверждения ваших изменений"
+      :submit => "Обновить",
+      :cancel => "Отменить мою учетную запись",
+      :question => "Вы уверены?",
+      :back => "Назад"
+    }
+  end 
+%>
+<h2 class="col-md-6 col-md-offset-3 text-center"><%= text[:h2] %> <%= resource_name.to_s.humanize %></h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="field">
+    <label><%= text[:email] %></label><br />
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div><%= text[:div] %> <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <div class="field">
+    <label><%= text[:password] %></label> <i>(<%= text[:leave] %>)</i><br />
+    <%= f.password_field :password, autocomplete: "off" %>
+    <% if @minimum_password_length %>
+      <br />
+      <em><%= @minimum_password_length %> characters minimum</em>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <label><%= text[:password_confirmation] %></label> <i>(<%= text[:need] %>)</i><br />
+    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+  </div>
+
+  <div class="field">
+    <label><%= text[:current_password %><br />
+    <%= f.password_field :current_password, autocomplete: "off" %>
+  </div>
+
+  <div class="actions">
+    <input type="submit" name="submit" value=<%= text[:submit] %>>
+  </div>
+<% end %>
+
+<h3></h3>
+
+<p><%= button_to text[:cancel], registration_path(resource_name), data: { confirm: text[:question] }, method: :delete %></p>
+
+<%= link_to text[:back], :back %>

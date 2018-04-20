@@ -1,0 +1,36 @@
+<% if session[:lang] == "ua" 
+    text ={
+      :h2 => "Повторно відправити інструкції підтвердження",
+      :email => "Електронна пошта",
+      :submit => "Підтвердити"
+    } 
+  elsif session[:lang] == "en" 
+    text ={
+      :h2 => "Resend confirmation instructions",
+      :email => "Email",
+      :submit => "Submit"
+    } 
+  elsif session[:lang] == "ru"
+    text ={
+      :h2 => "Повторно отправить инструкции подтверждения",
+      :email => "Электронная почта",
+      :submit => "Подтвердить"
+    } 
+  end 
+%>
+<h2 class="col-md-6 col-md-offset-3"><%= text[:h2] %></h2>
+
+<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="field">
+    <label><%= text[:email] %></label><br />
+    <%= f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+  </div>
+
+  <div class="actions">
+    <input type="submit" name="submit" value=<%= text[:submit] %>>
+  </div>
+<% end %>
+
+<%= render "users/shared/links" %>
