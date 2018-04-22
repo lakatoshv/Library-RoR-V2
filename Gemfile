@@ -52,6 +52,13 @@ gem 'activeadmin'
 gem 'chosen-rails'
 gem 'jquery-turbolinks'
 
+#omni
+gem 'omniauth-oauth2'
+#fb_login_omni
+gem 'omniauth-facebook'
+#google_login_omni
+gem 'omniauth-google-oauth2'
+
 group :development do
   gem 'sqlite3'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

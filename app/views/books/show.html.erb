@@ -48,6 +48,207 @@
       <span class="glyphicon glyphicon-thumbs-down"><%= @book.get_dislikes.size %></span>
       <%= link_to like, like_book_path(@book), class: "btn btn-default blue" %>
       <%= link_to dislike, dislike_book_path(@book), class: "btn btn-default red" %><br>
+<!--
+<script type="text/javascript">
+Share = {
+    /**
+     * Показать пользователю диалог шаринга в сооветствии с опциями
+     * Метод для использования в inline-js в ссылках
+     * При блокировке всплывающего окна подставит нужный адрес и ползволит браузеру перейти по нему
+     *
+     * @example <a href="" onclick="return share.go(this)">like+</a>
+     *
+     * @param Object _element - элемент DOM, для которого
+     * @param Object _options - опции, все необязательны
+     */
+    go: function(_element, _options) {
+        var
+            self = Share,
+            options = $.extend(
+                {
+                    type:       'vk',    // тип соцсети
+                    url:        location.href,  // какую ссылку шарим
+                    count_url:  location.href,  // для какой ссылки крутим счётчик
+                    title:      document.title, // заголовок шаринга
+                    image:        '',             // картинка шаринга
+                    text:       '',             // текст шаринга
+                },
+                $(_element).data(), // Если параметры заданы в data, то читаем их
+                _options            // Параметры из вызова метода имеют наивысший приоритет
+            );
+  
+        if (self.popup(link = self[options.type](options)) === null) {
+            // Если не удалось открыть попап
+            if ( $(_element).is('a') ) {
+                // Если это <a>, то подставляем адрес и просим браузер продолжить переход по ссылке
+                $(_element).prop('href', link);
+                return true;
+            }
+            else {
+                // Если это не <a>, то пытаемся перейти по адресу
+                location.href = link;
+                return false;
+            }
+        }
+        else {
+            // Попап успешно открыт, просим браузер не продолжать обработку
+            return false;
+        }
+    },
+  
+    // ВКонтакте
+    vk: function(_options) {
+        var options = $.extend({
+                url:    location.href,
+                title:  document.title,
+                image:  '',
+                text:   '',
+            }, _options);
+  
+        return 'http://vkontakte.ru/share.php?'
+            + 'url='          + encodeURIComponent(options.url)
+            + '&title='       + encodeURIComponent(options.title)
+            + '&description=' + encodeURIComponent(options.text)
+            + '&image='       + encodeURIComponent(options.image)
+            + '&noparse=true';
+    },
+  
+    // Одноклассники
+    ok: function(_options) {
+        var options = $.extend({
+                url:    location.href,
+                text:   '',
+            }, _options);
+  
+        return 'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1'
+            + '&st.comments=' + encodeURIComponent(options.text)
+            + '&st._surl='    + encodeURIComponent(options.url);
+    },
+  
+    // Facebook
+    fb: function(_options) {
+        var options = $.extend({
+                url:    location.href,
+                title:  document.title,
+                image:  '',
+                text:   '',
+            }, _options);
+  
+        return 'http://www.facebook.com/sharer.php?s=100'
+            + '&p[title]='     + encodeURIComponent(options.title)
+            + '&p[summary]='   + encodeURIComponent(options.text)
+            + '&p[url]='       + encodeURIComponent(options.url)
+            + '&p[images][0]=' + encodeURIComponent(options.image);
+    },
+  
+    // Живой Журнал
+    lj: function(_options) {
+        var options = $.extend({
+                url:    location.href,
+                title:  document.title,
+                text:   '',
+            }, _options);
+  
+        return 'http://livejournal.com/update.bml?'
+            + 'subject='        + encodeURIComponent(options.title)
+            + '&event='         + encodeURIComponent(options.text + '<br/><a href="' + options.url + '">' + options.title + '</a>')
+            + '&transform=1';
+    },
+  
+    // Твиттер
+    tw: function(_options) {
+        var options = $.extend({
+                url:        location.href,
+                count_url:  location.href,
+                title:      document.title,
+            }, _options);
+  
+        return 'http://twitter.com/share?'
+            + 'text='      + encodeURIComponent(options.title)
+            + '&url='      + encodeURIComponent(options.url)
+            + '&counturl=' + encodeURIComponent(options.count_url);
+    },
+  
+// Google+
+    gg: function (_options) {
+        var options = $.extend({
+            url: location.href          
+        }, _options);
+  
+        return 'https://plus.google.com/share?url='
+            + encodeURIComponent(options.url);
+    },
+  
+    // Mail.Ru
+    mr: function(_options) {
+        var options = $.extend({
+                url:    location.href,
+                title:  document.title,
+                image:  '',
+                text:   '',
+            }, _options);
+  
+        return 'http://connect.mail.ru/share?'
+            + 'url='          + encodeURIComponent(options.url)
+            + '&title='       + encodeURIComponent(options.title)
+            + '&description=' + encodeURIComponent(options.text)
+            + '&imageurl='    + encodeURIComponent(options.image);
+    },
+  
+    // Открыть окно шаринга
+    popup: function(url) {
+        return window.open(url,'','toolbar=0,status=0,scrollbars=1,width=626,height=436');
+    }
+}
+</script>
+<script type="text/javascript">
+$(document).on('click', '.social_share', function(){
+    Share.go(this);
+});
+</script>
+<style type="text/css"> 
+.share_this{margin-top:15px;width:100%;}
+.social_share{float:right;margin-left:5px;color:#fff;padding:2px;}
+.social_share:hover{cursor:pointer;}
+.vk:hover{background:#ff6600;}
+.fb:hover{background:#ff6600;}
+.tw:hover{background:#ff6600;}
+.gg:hover{background:#ff6600;}
+.ok:hover{background:#ff6600;}
+.mr:hover{background:#ff6600;}
+.lj:hover{background:#ff6600;}
+.vk{background:#339900;}
+.fb{background:#339900;}
+.tw{background:#339900;}
+.gg{background:#339900;}
+.ok{background:#339900;}
+.mr{background:#339900;}
+.lj{background:#339900;}
+</style>
+<div class="share_this">
+    <a class="social_share vk" data-type="vk">ВКонтакте</a>
+    <a  class="social_share fb" data-type="fb">Facebook</a>
+    <a  class="social_share tw" data-type="tw">Twitter</a>
+    <a  class="social_share ok" data-type="ok">Одноклассники</a>
+    <a  class="social_share gg" data-type="gg">Google+</a>
+    <a  class="social_share mr" data-type="mr">Mail.Ru</a>
+    <a  class="social_share lj" data-type="lj">LiveJournal</a>
+</div>
+-->
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+  <a class="a2a_button_facebook"></a>
+  <a class="a2a_button_twitter"></a>
+  <a class="a2a_button_google_plus"></a>
+  <a class="a2a_button_google_gmail"></a>
+  <a class="a2a_button_whatsapp"></a>
+  <a class="a2a_button_facebook_messenger"></a>
+  <a class="a2a_button_line"></a>
+  <a class="a2a_button_skype"></a>
+  <a class="a2a_button_telegram"></a>
+  <a class="a2a_button_viber"></a>
+  <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
     </p>
     <p>
       <strong><%= t ".label_Q" %></strong>
