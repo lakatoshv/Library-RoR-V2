@@ -45,7 +45,7 @@ gem 'paperclip'
 gem 'devise'
 # мейлер
 gem 'mailboxer'
-# дозволяэ заходити до адмiн частини
+# адмінка
 gem 'activeadmin'
 
 # для мейлера

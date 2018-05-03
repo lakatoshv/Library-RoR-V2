@@ -1,5 +1,14 @@
+# devise_for :users, skip: [:session, :password, :registration, :confirmation], controllers: { omniauth_callbacks: 'omniauth_callbacks' }
+# get 'auth/:provider/setup' => 'omniauth_callbacks#setup'
+# devise_for :users, skip: :omniauth_callbacks
+
 Rails.application.routes.draw do
+  devise_for :users, only: :omniauth_callbacks, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
+
+
   scope ":locale" , defaults: { locale: I18n.locale } do
+     
+
     resources :vidguks
     get 'abouts/about_us'
 
@@ -107,6 +116,7 @@ resources :messages, only: [:new, :create]
     get 'sign_up', to: 'devise/registrations#new'
     get 'sign_in', to: 'devise/sessions#new'
     get 'sign_out', to: 'devise/sessions#destroy'
+    get 'omniauth/:provider' => 'omniauth#localized', as: :localized_omniauth
   end
   get 'show', to: 'home#show'
   get  'profile', to: 'userparams#profile'
@@ -115,7 +125,7 @@ resources :messages, only: [:new, :create]
 
 
 
-    devise_for :users
+    devise_for :users, skip: :omniauth_callbacks, controllers: { passwords: 'passwords', registrations: 'registrations', omniauth_callbacks: 'omniauth_callbacks' }
     # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   end
   get '*path', to: redirect("/#{I18n.default_locale}/%{*path}")

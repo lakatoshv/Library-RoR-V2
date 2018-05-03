@@ -5,8 +5,9 @@ class CreateUserparams < ActiveRecord::Migration[5.0]
       t.string :lastname
       t.string :city
       t.integer :user_id
-
+      devise :omniauthable, :omniauth_providers => [:facebook]
       t.timestamps
     end
+    
   end
 end
