@@ -7,7 +7,7 @@ require 'rails-i18n'
 Bundler.require(*Rails.groups)
 module SampleRails5
   class Application < Rails::Application
-  	config.force_ssl = true
+  	#config.force_ssl = true
   	config.i18n.available_locales = [:en, :ru, :ua]
   	config.i18n.default_locale = :"ua"
     # Settings in config/environments/* take precedence over those specified here.

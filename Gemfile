@@ -52,12 +52,18 @@ gem 'activeadmin'
 gem 'chosen-rails'
 gem 'jquery-turbolinks'
 
+#авторизація
 #omni
 gem 'omniauth-oauth2'
-#fb_login_omni
+#facebook_login
 gem 'omniauth-facebook'
-#google_login_omni
+#google_login
 gem 'omniauth-google-oauth2'
+#github_login
+gem 'omniauth-github'
+gem 'activerecord-session_store'
+#for https
+#gem 'thin'
 
 group :development do
   gem 'sqlite3'
@@ -69,6 +75,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'dotenv'
 end
 group :production do
   gem 'pg'
