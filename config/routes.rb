@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     resources :books do
       member do
         get 'read', to: 'books#read'
+        get 'listen', to: 'books#listen'
       end
     end
     resources :auths do

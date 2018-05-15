@@ -92,9 +92,15 @@
     location = "?direction="+type_sort+"&page=1&sort="+value_sort;
   });
 </script>
-
-<div id="container"></div>
-
+ <script src="https://rawgit.com/mrdoob/three.js/master/build/three.min.js"></script>
+  <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/libs/stats.min.js"></script>
+  <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/CanvasRenderer.js"></script>
+  <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/Projector.js"></script>
+  <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/libs/tween.min.js"></script>7
+  <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/CSS3DRenderer.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/popper.js@1.14.3/dist/umd/popper.js"></script>
+<%= javascript_include_tag :modernizr %>
 <div id="menu" >
   <button id="table" OnClick="init('table');">Таблиця</button>
   <button id="helix" OnClick="init('helix');">Спіраль</button>
@@ -107,6 +113,9 @@
   <button><span class="glyphicon glyphicon-arrow-right" OnClick="move('right');"> </span></button>
   <button><span class="glyphicon glyphicon-chevron-right" OnClick="move('chevron-right');"> </span></button>
 </div>
+
+<div id="container"></div>
+
   <script>
   var books = <%=  @books.to_json.html_safe %>;
   var config = {
@@ -345,6 +354,7 @@
             alert("dd")
             var id = intersects[0].object.id
             bookid = id;
+            /*
             document.getElementById("modal-author").innerHTML = books[id].author + id;
             document.getElementById("modal-title").innerHTML = books[id].name + " № " + id;
             document.getElementById("leftside-author").innerHTML = books[id].author + id;
@@ -360,6 +370,7 @@
             
             $(".book-1").css("background-image", "url(" + books[id].img + ")");
             document.getElementById("body-text").firstChild.nodeValue = books[id].minidescription;
+            */
             document.getElementById('click').click();
 
           }
@@ -431,7 +442,7 @@
     }
 
   </script>
-<button type="button" id="click" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="display: none;">
+<button type="button" id="click" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
 </button>
   <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -453,54 +464,14 @@
     -->
     <center>
     <div class="main">
-        <ul id="bk-list" class="bk-list clearfix">
-          <li>
-            <div class="bk-book book-1">
-              <div class="bk-front">
-                <div class="bk-cover-back"></div>
-                <div class="bk-cover">
-                  <h2>
-                    <span id="cover-author">...</span>
-                    <span id="cover-title">...</span>
-                  </h2>
-                </div>
-              </div>
-              <div class="bk-page">
-                <div class="bk-content">
-                  <h2 id="modal-author">.</h2>
-                  <h2 id="modal-title">Назва книги</h2>
-                </div>
-                <div class="bk-content">
-                  <p id="body-text">...</p><br/>
-                  <a href="#">Детальніше...</a>
-                </div>
-                <div class="bk-content bk-content-current">
-                  <p>Red snapper Kafue pike fangtooth humums's slipmouth, salmon cutlassfish; swallower European perch mola mola sunfish, threadfin bream. Billfish hog sucker trout-perch lenok orbicular velvetfish. Delta smelt striped bass, medusafish dragon goby starry flounder cuchia round whitefish northern anchovy spadefish merluccid hake cat shark Black pickerel. Pacific cod.</p>
-                </div>
-              </div>
-              <div class="bk-back">
-                <p>In this nightmare vision of cats in revolt, fifteen-year-old Alex and his friends set out on a diabolical orgy of robbery, rape, torture and murder. Alex is jailed for his teenage delinquency and the State tries to reform him - but at what cost?</p>
-              </div>
-              <div class="bk-right"></div>
-              <div class="bk-left">
-                <h2>
-                  <span id="leftside-author">Автор</span>
-                  <span id="leftside-title">Назва книги</span>
-                </h2>
-              </div>
-              <div class="bk-top"></div>
-              <div class="bk-bottom"></div>
-            </div>
-          </li>
-          </ul>
-        <div class="bookshelf"></div>
+        fff
       </div>
       </center>
     </div>
     <script>
       $(function() {
 
-        Books.init();
+        //Books.init();
 
       });
     </script>

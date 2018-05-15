@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
- before_action :set_book, only: [:show, :like, :dislike, :read]
+ before_action :set_book, only: [:show, :like, :dislike, :read, :listen]
  helper_method :sort_column, :sort_direction
   # GET /books
   # GET /books.json
@@ -33,6 +33,8 @@ class BooksController < ApplicationController
     @vidguk = Vidguk.new
   end
   def read
+  end
+  def listen
   end
   # GET /books/like
   def like

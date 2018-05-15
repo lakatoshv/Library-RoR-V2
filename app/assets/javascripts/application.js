@@ -20,8 +20,6 @@
 //= require jquery.turbolinks
 //= require chosen-jquery
 //= require messages
-//= require modernizr.custom
-//= require books2
 
 $(document).ready(
     function(){
