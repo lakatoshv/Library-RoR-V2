@@ -12,7 +12,23 @@
   </div> 
   <div class="text-center book">
   <div class="cont">
-  	<textarea id="textForSpeach">Hello, this is good day. Today, we are learning the text to speach converter.</textarea>
+    <%
+      text = []
+      #contents = File.read("public/uploads/" + @book.name_of_file + "." + @book.rozshirennya)
+      #text = contents.encode(Encoding.find('UTF-8'))
+      #text = File.read("public/uploads/" + @book.name_of_file + "." + @book.rozshirennya)
+      #text = ""
+
+      reader = PDF::Reader.new("public/uploads/Origin.pdf")
+      #book_page = 1
+      reader.pages.each do |page| 
+        if page.blank? != true || page.empty? != true
+          text.push page.text
+        end
+      end
+    %>
+    <textarea id="textForSpeach">
+    </textarea>
   	<label>
   		<span>Voice</span>
   		<select id="voiceOptions"></select>
@@ -29,18 +45,33 @@
   		<span>Pitch</span>
   		<input type="range" id="pitchSlider" min="0" max="2" value="0.5" step="0.1">
   	</label>
-  	<div class="btn btn-default" onclick="speak()">Speak</div>
-  	<div class="btn btn-default" onclick="window.speechSynthesis.pause()">пауза</div>
+  	<div class="btn btn-default" onclick="speak('speak')">Говорити</div>
+  	<div class="btn btn-default" onclick="speak('pause')">пауза</div>
+    <div class="btn btn-default" onclick="speak('continue')">продовжити</div>
+    <div class="btn btn-default" onclick="speak('stop')">зупинити</div>
+    <div class="btn btn-default" onclick="Next()">Далі</div>
+    <div class="btn btn-default" onclick="Prev()">Назад</div>
   </div>
   <script type="text/javascript">
-  	var msg = new SpeechSynthesisUtterance('Hello World');
-	window.speechSynthesis.speak(msg);
+
+    var i = 0;
+    var text = <%=  text.to_json.html_safe %>;
+    $("#textForSpeach").text(text[i])
+    function Next(){
+      i++;
+      $("#textForSpeach").text(text[i])
+    }
+    function Prev(){
+      i--;
+      $("#textForSpeach").text(text[i])
+    }
+
+
   	var voiceOptions = document.getElementById("voiceOptions");
   	var volumeSlider = document.getElementById("volumeSlider");
   	var rateSlider = document.getElementById("rateSlider");
   	var pitchSlider = document.getElementById("pitchSlider");
   	var textForSpeach = document.getElementById("textForSpeach");
-
   	var voiceMap = [];
 
   	function loadVoices(){
@@ -49,7 +80,7 @@
   			var voice = voices[i];
   			var option = document.createElement("option");
   			option.value = voice.name;
-  			option.innerHTML = voice.name;
+  			option.innerHTML = voice.name + "(" + voice.lang + ")";
   			voiceOptions.appendChild(option);
   			voiceMap[voice.name] = voice;
   		}
@@ -59,34 +90,29 @@
   		loadVoices();
   	}
 
-  	function speak(){
-  		var msg = new SpeechSynthesisUtterance(textForSpeach.value);
-  		msg.volume = volumeSlider.value;
-  		msg.voice = voiceMap[voiceOptions.value];
-  		msg.rate = rateSlider.value;
-  		msg.pitch = pitchSlider.value;
-  		window.speechSynthesis.speak(msg);
+  	function speak(doing){
+      if(doing === "stop"){
+        speechSynthesis.cancel();
+      }
+      else if(doing === "speak"){
+        speechSynthesis.cancel();
+      		var msg = new SpeechSynthesisUtterance(textForSpeach.value);
+      		msg.volume = volumeSlider.value;
+      		msg.voice = voiceMap[voiceOptions.value];
+      		msg.rate = rateSlider.value;
+      		msg.pitch = pitchSlider.value;
+      		window.speechSynthesis.speak(msg);
+      }
+      else if(doing === "pause"){
+        speechSynthesis.pause();
+      }
+      else if(doing === "continue"){
+        window.speechSynthesis.resume();
+      }
   	}
   </script>
 
     <br>
-      #text = ""
-      #contents = File.read("public/uploads/" + @book.name_of_file + "." + @book.rozshirennya)
-      #text = contents.encode(Encoding.find('UTF-8'))
-      #text = File.read("public/uploads/" + @book.name_of_file + "." + @book.rozshirennya)
-      #text = ""
-
-      #reader = PDF::Reader.new("public/uploads/igra-prestolov-kniga-i.pdf")
-      #book_page = 1
-      #reader.pages.each do |page| 
-      #  text = page.text
-      #
-
-
-        <p class="text-justify"> #text </p>
-        <br><p class="text-center"><b class="page-number"></b></p><br>
-        #book_page += 1
-      #end
       #back = t ".back"
   </div>
   <br><br>
@@ -111,4 +137,35 @@
     $(".return").click(function () {
       location = "../";
     });
+</script>
+<script type="text/javascript">
+  /*
+  const msg = new SpeechSynthesisUtterance();
+  let voices = [];
+  const voicesDropdown = document.querySelector('[name="voice"]');
+  const options = document.querySelectorAll('[type="range"], [name="text"]');
+  const speakButton = document.querySelector("#speak");
+  const stopButton = document.querySelector("#stop");
+  msg.text = document.querySelector("#textForSpeach").value;
+
+  function populateVoices(){
+    voices = speechSynthesis.getVoices();
+    voicesDropdown.innerHTML = voices
+      .map(voice => `
+        <option value="${voice.name}">${voice.name} (${voice.lang})</option>`).join('');
+  }
+  function setVoice(){
+    msg.voice = voices.find(voice => voice.name === this.value);
+    toggle();
+  }
+  function toggle(startOver = true){
+    speechSynthesis.cancel();
+    if(startOver){
+      speechSynthesis.speak(msg);
+    }
+  }
+
+  window.speechSynthesis.addEventListener("onvoicechanged", populateVoices);
+  voicesDropdown.addEventListener("change", setVoice);
+  */
 </script>

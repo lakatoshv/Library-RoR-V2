@@ -10,6 +10,7 @@
   </div>
   <br>
 </div>
+<%= link_to @books.index("1"), @books.index("1"), class: "product" %>
 <% if @books.count > 1 %> 
 <div class="back">
   <div class="text-left">
@@ -99,8 +100,9 @@
   <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/libs/tween.min.js"></script>7
   <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
   <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/renderers/CSS3DRenderer.js"></script>
-  <script type="text/javascript" src="https://unpkg.com/popper.js@1.14.3/dist/umd/popper.js"></script>
-<%= javascript_include_tag :modernizr %>
+  <script type="text/javascript" src="<%= Rails.root %>/app/assets/javascript/popper.js"></script>
+  <link rel="stylesheet" type="text/css" href="<%= Rails.root %>/app/assets/stylesheets/3d_books_with_animation.css" />
+  <script src="<%= Rails.root %>/app/assets/javascripts/modernizr.custom.js"></script>
 <div id="menu" >
   <button id="table" OnClick="init('table');">Таблиця</button>
   <button id="helix" OnClick="init('helix');">Спіраль</button>
@@ -351,9 +353,10 @@
           count++;
         }
           if(intersects[0].object.id != bookid){
-            alert("dd")
             var id = intersects[0].object.id
             bookid = id;
+            var href = "books/" + id
+            location.href = href/*corresponds_id.indexOf(id)*/;
             /*
             document.getElementById("modal-author").innerHTML = books[id].author + id;
             document.getElementById("modal-title").innerHTML = books[id].name + " № " + id;

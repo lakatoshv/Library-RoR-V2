@@ -16,11 +16,12 @@
 //= require tether
 //= require bootstrap-sprockets
 //= require bootstrap
-//= require_tree .
 //= require jquery.turbolinks
 //= require chosen-jquery
 //= require messages
+//=require modernizr.custom.js
 
+//=require_tree .
 $(document).ready(
     function(){
         function set_cookie ( name, value, exp_y, exp_m, exp_d, path, domain, secure ){
