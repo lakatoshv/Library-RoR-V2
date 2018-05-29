@@ -161,32 +161,33 @@
     }
 
     function speak(action){
-      if(action === "stop"){
-        speechSynthesisInstance.cancel();
+      switch(action){
+        case "stop":
+          speechSynthesis.cancel();
+          break;
+        case "speak":
+          speechSynthesis.cancel();
+          var msg = new SpeechSynthesisUtterance(textForSpeach.value);
+          msg.volume = volumeSlider.value;
+          msg.voice = voiceMap[voiceOptions.value];
+          msg.rate = rateSlider.value;
+          msg.pitch = pitchSlider.value;
+          speechSynthesis.speak(msg);
+            msg.onend = function(event) {
+              Next();
+              speak("speak");
+            }
+          break;
+        case "pause":
+          speechSynthesis.pause();
+          break;
+        case "continue":
+          speechSynthesis.resume();
+          break;
       }
-      else if(action === "speak"){
-        speechSynthesis.cancel();
-        var msg = new SpeechSynthesisUtterance(textForSpeach.value);
-        msg.volume = volumeSlider.value;
-        msg.voice = voiceMap[voiceOptions.value];
-        msg.rate = rateSlider.value;
-        msg.pitch = pitchSlider.value;
-        speechSynthesis.speak(msg);
-        /*
-        msg.onend = function(event) {
-          if(action !== "stop"){
-            Next();
-            speak("speak");
-          }
-        }
-        */
-      }
-      else if(action === "pause"){
-        speechSynthesis.pause();
-      }
-      else if(action === "continue"){
-        speechSynthesis.resume();
-      }
+    }
+    function check(action){
+      
     }
   </script>
 </div>
