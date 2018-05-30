@@ -1,31 +1,44 @@
-<div class="text-center back">
-	<%
-      index = "Головна"  
-    %>
-    <p class="text-left"><%= link_to index, index_path %> / Про програму</p>
-  <h1 class="col-md-6 col-md-offset-3"><%= t ".title" %></h1></br>
-</div>
-<div class="col-md-4 col-md-offset-4 back">
-  <p id="notice"><%= notice %></p>
-  <div class="show_h2">
-	<%
-	  	here = t ".here"
-	  	version = ""
-	  	subversion = ""
-	%>
-
-	<p><strong class="show_h2 text-center"><%= t ".description" %><%= link_to here, for_holders_path %>.</strong></p>
-	<br><br>
-	<% @abouts_program.each do |abouts_program| %>
-		<% if version != abouts_program.version %>
-			<h2>Версія <%= abouts_program.version %></h2>
-			<% version = abouts_program.version %>
-		<% end %>
-		<% if subversion != abouts_program.subversion %>
-			<h3><%= abouts_program.subversion %></h3>
-			<% subversion = abouts_program.subversion %>
-		<% end %>
-		
-		<p><%= abouts_program.made %></p>
-    <% end %>
-</div>
+<div class="prof masthead d-flex">
+    <div class="container my-auto">
+        <div class="row">
+        	<%
+		      index = "Головна"  
+		    %>
+        	<ol class="breadcrumb col-md-10 center-block"> 
+	            <li><a href="portfolio.php"><%= link_to index, index_path %></a></li>
+	            <li class="active"><%= t ".title" %></li>
+	        </ol>
+            <a name="prof-knowledge"></a>
+            <div class="col-md-10 col-sm-6 col-xs-6 mx-auto body-background center-block">
+                <h2 class="text-white text-center bounceInRight wow">
+              		<strong><%= t ".title" %></strong>
+                </h2>
+                <p id="notice"><%= notice %></p> 
+                <div class="show_h2" style="text-align: justify;">
+				<%
+				  	here = t ".here"
+				  	version = ""
+				  	subversion = ""
+				%>
+				<div class="row">
+					<div class="versions">
+						<p><strong class="show_h2"><%= t ".description" %><%= link_to here, for_holders_path %>.</strong></p>
+						<br><br>
+						<% @abouts_program.each do |abouts_program| %>
+							<% if version != abouts_program.version %>
+								<h2>Версія <%= abouts_program.version %></h2>
+								<% version = abouts_program.version %>
+							<% end %>
+							<% if subversion != abouts_program.subversion %>
+								<h3><%= abouts_program.subversion %></h3>
+								<% subversion = abouts_program.subversion %>
+							<% end %>
+						
+							<p><i><%= abouts_program.made %></i></p>
+				    	<% end %>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div> 

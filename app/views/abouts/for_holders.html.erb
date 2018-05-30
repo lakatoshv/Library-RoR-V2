@@ -1,11 +1,25 @@
-<div class="col-md-4 col-md-offset-4 back">
-	<%
-      index = "Головна"  
-    %>
-    <p class="text-left"><%= link_to index, index_path %> / Правовласникам</p>
-  	<h2><%= t ".title" %></h2>
-  	<div class="show_h2">
-  		<p><%= t ".text-1" %> email -
-  		 <strong>some.pochta1@gmail.com</strong><%= t ".text-2" %></p>
-	</div>
-</div>
+<div class="prof masthead d-flex">
+    <div class="container my-auto">
+        <div class="row">
+        	<%
+		      index = "Головна"  
+		    %>
+        	<ol class="breadcrumb col-md-10 center-block"> 
+	            <li><a href="portfolio.php"><%= link_to index, index_path %></a></li>
+	            <li class="active"><%= t ".title" %></li>
+	        </ol>
+            <a name="prof-knowledge"></a>
+            <div class="col-md-10 col-sm-6 col-xs-6 mx-auto body-background center-block">
+                <h2 class="text-white text-center bounceInRight wow">
+              		<strong><%= t ".title" %></strong>
+                </h2>
+                <p id="notice"><%= notice %></p> 
+				<div class="row">
+					<div class="versions" >
+						<p><%= t ".text-1" %> email -
+  		 					<strong>some.pochta1@gmail.com</strong><%= t ".text-2" %></p>
+					</div>
+				</div>
+        </div>
+    </div>
+</div> 
