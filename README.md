@@ -56,9 +56,9 @@
     - _Додана можливість авторизації через Github_
 5. **[2.3.3](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.3)**
     - _Додана авторизація через Google_
-6. **[2.4](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.4)**
+6. **[2.4](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.4)**
     - _Додана таблиця Про програму, змінений блок Про програму_
-7. **[2.5](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.5)**
+7. **[2.5](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.5)**
     - _Доданий модуль віртуальної бібліотеки на Three.js_
 ### **3**
 1. **[3.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v3.1)**
