@@ -1,41 +1,63 @@
-<p id="notice"><%= notice %></p>
-<div class="text-center back">
-    <%
-      index = "Головна"  
-    %>
-    <p class="text-left"><%= link_to index, index_path %> / Автори</p>
-  <h1 class="col-md-6 col-md-offset-3"><%= t ".title" %></h1><br><br>
-</div>
-<div class="container">
-  <div class="row">
-    <% @auths.each do |auth| %>
-      <div class="col-lg-3">
-        <div class="box-auth">
-          <div class="box-gray aligncenter">
-            <h3><%= link_to auth.auth, auth, :class => "product" %></h3>
-            <h4>
-            <% 
-            books = auth.book.split(',') 
-            if books.count > 1 
-              books.each do |book|
-                book_link = Book.search(book)
-                #if book_link.count > 1
-            %>
-                  <%= link_to book, books_path + "?utf8=✓&search=" + book + "&commit=Пошук", :class => "product" %><br/>
-              <% 
-                #end
-                end 
-            else %>
-               <%= link_to auth.book, books_path + "?utf8=✓&search=" + auth.book + "&commit=Пошук", :class => "product" %>
-            <% end %>
+<div class="prof masthead d-flex">
+  <div class="container my-auto">
+    <div class="row">
+      <%
+        index = "Головна"  
+      %>
+      <ol class="breadcrumb col-md-10 center-block"> 
+        <li><a href="portfolio.php"><%= link_to index, index_path %></a></li>
+        <li class="active"><%= t ".title" %></li>
+      </ol>
+      <div class="col-md-10 col-sm-6 col-xs-6 mx-auto body-background center-block">
+        <h2 class="text-white text-center bounceInRight wow">
+          <strong><%= t ".title" %></strong>
+        </h2>
+        <p id="notice"><%= notice %></p> 
+            <div class="row">
+              <% @auths.each do |auth| %>
+                <div class="col-md-4 col-sm-6 col-xs-6 body-background" id="item">
+                  <div class="box">
+                    <div class="box-gray aligncenter">
+                      <h3><%= link_to auth.auth, auth, :class => "product" %></h3>
+                      <h4>
+                        <% 
+                          books = auth.book.split(',') 
+                          if books.count > 1 
+                            books.each do |book|
+                              book_link = Book.search(book)
+                              #if book_link.count > 1
+                              %>
+                                <%= link_to book, books_path + "?utf8=✓&search=" + book + "&commit=Пошук", :class => "product" %><br/>
+                              <% 
+                              #end
+                              end 
+                          else %>
+                            <%= link_to auth.book, books_path + "?utf8=✓&search=" + auth.book + "&commit=Пошук", :class => "product" %>
+                      <%  end %>
 
-            </h4>
-            <div class="icon">
-              <i class="fa fa-desktop fa-3x"></i>
+                      </h4>
+                      <div class="icon">
+                        <i class="fa fa-desktop fa-3x"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
             </div>
-          </div>
         </div>
-      </div>
-    <% end %>
+    </div>
   </div>
-</div>
+</div> 
+<script>
+  $(document).ready(function(){  
+    $('.container').each(function(){
+      var highestBox = 0;
+      $('.box-gray ', this).each(function(){
+        if($(this).height() > highestBox) {
+          highestBox = $(this).height();
+        }
+      });
+      $('.box-gray ',this).height(highestBox);
+    });
+  });
+</script>

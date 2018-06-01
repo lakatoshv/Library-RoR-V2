@@ -1,3 +1,32 @@
 // Place all the styles related to the auths controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#item{
+  margin-top: 10px; 
+  min-width: 250px;
+}
+#item.body-background h3 a{
+  color: black;
+  text-align: center;
+}
+#item.body-background:hover{
+    box-shadow: 0 0 10px rgba(0,0,0,1);
+    background: white;
+    opacity: 1;
+    border: 1px solid red;
+}
+@media (max-width: 360px) {
+  #item{
+    width: 100%
+  }
+  #item.body-background h3{
+    font-size: 16px;
+    margin-left: 0;
+    padding-left: 0;
+  }
+  #item.body-background p{
+    font-size: 14px;
+  }
+
+}
