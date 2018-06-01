@@ -1,9 +1,6 @@
 # **[Бібліотека на RubyOnRails](http://library-ror.herokuapp.com/ua/)(Сайт)**
 # **[Бібліотека на RubyOnRails](https://github.com/sgstriker/library-with-SQLite)(Github)**
 
-# **Back-End: [Олександр Данко](https://github.com/usertrav)**
-# **Front-End: [Лакатош Віталій](https://github.com/lakatoshv)**
-
 
 ## **Використані технології:**
 1. ### **Ruby on Rails:**
@@ -45,29 +42,32 @@
 
 
 ## **Версії:**
-### **2**
-### **[2.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.1)**
+### **1**
+1. **[2.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.1)**
     - _Доданий модуль віртуальної бібліотеки на Three.js_
-### **[2.2.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.2.1)**
+### **2** 
+1. **[2.2.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.2.1)**
     - _Додані хлібні крихти_
-### **[2.2.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.2.2)**
+2. **[2.2.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.2.2)**
     - _Додана можливість поділитись книгою_
-### **[2.3.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.1)**
+3. **[2.3.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.1)**
     - _Налаштований OmiAuth, авторизація через facebook_
-### **[2.3.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.2)**
+4. **[2.3.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.2)**
     - _Додана можливість авторизації через Github_
-### **[2.3.3](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.3)**
+5. **[2.3.3](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.3)**
     - _Додана авторизація через Google_
-### **[2.3.4](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.4)**
+6. **[2.3.4](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.4)**
     - _Додана таблиця Про програму, змінений блок Про програму_
-### **[2.3.5](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.5)**
+7. **[2.3.5](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.5)**
     - _Доданий модуль віртуальної бібліотеки на Three.js_
-### **[3.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v3.1)**
+### **3**
+1. **[3.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v3.1)**
     - _Додана можливість прослуховувати книгу за допомогою Google Text To Speach_
-### **[3.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v3.2)**
+2. **[3.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v3.2)**
     - _Додані стилі та JavaScript для програвача_
-### **[4.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.1)**
+### **4**
+1. **[4.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.1)**
     - _Змінений дизайн блоку abouts_
-### **[4.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.2)**
+2. **[4.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.2)**
     - _Змінений дизайн блоку auths_
   
