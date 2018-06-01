@@ -28,7 +28,7 @@
 
 
 ## **Виконані завдання:**
-### **[Виконані завдання у версії 1](https://github.com/lakatoshv/Library-RoR)**
+### **[Виконані завдання у версії 1](https://github.com/lakatoshv/Library-RoR-V1)**
 ### **Версія 2:**
 1. Додані "хлібні крихти"
 2. Додана можливість поділитись книгою
@@ -36,9 +36,38 @@
     - Facebook
     - Github
     - Google
+4. Доданий ввід змін в проекті через форму
+5. Візуалізація вибору книги на ThreeJS
+6. Реалізація прослуховування книги за допомогою Text to Speach
+    - Функції плеєру: Грати, Зупинити, Пауза, Продовжити
+    - Можливість переходити на наступну чи попередню сторінки
+    - Автоматичний перехід на наступну сторінку
 
 
 ## **Версії:**
-### **[1](https://github.com/lakatoshv/Library-RoR)**
-### **[2](https://github.com/lakatoshv/Library-RoR-V2)**
+### **2**
+### **[2.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.1)**
+    - _Доданий модуль віртуальної бібліотеки на Three.js_
+### **[2.2.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.2.1)**
+    - _Додані хлібні крихти_
+### **[2.2.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.2.2)**
+    - _Додана можливість поділитись книгою_
+### **[2.3.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.1)**
+    - _Налаштований OmiAuth, авторизація через facebook_
+### **[2.3.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.2)**
+    - _Додана можливість авторизації через Github_
+### **[2.3.3](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.3)**
+    - _Додана авторизація через Google_
+### **[2.3.4](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.4)**
+    - _Додана таблиця Про програму, змінений блок Про програму_
+### **[2.3.5](https://github.com/lakatoshv/Library-RoR-V2/tree/v2.3.5)**
+    - _Доданий модуль віртуальної бібліотеки на Three.js_
+### **[3.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v3.1)**
+    - _Додана можливість прослуховувати книгу за допомогою Google Text To Speach_
+### **[3.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v3.2)**
+    - _Додані стилі та JavaScript для програвача_
+### **[4.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.1)**
+    - _Змінений дизайн блоку abouts_
+### **[4.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.2)**
+    - _Змінений дизайн блоку auths_
   
