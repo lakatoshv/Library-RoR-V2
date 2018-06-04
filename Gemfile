@@ -76,6 +76,9 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'dotenv'
+  #діаграми
+  gem 'ruby-graphviz', '~> 1.2', '>= 1.2.2'
+  gem 'railroady'
 end
 group :production do
   gem 'pg'
