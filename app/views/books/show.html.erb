@@ -8,342 +8,163 @@
 <% else %> 
   <% ocinka_kritikiv = suma_ocinok/count %> 
 <% end %>
-<div class="col-md-4 col-md-offset-4 back">
-  <p id="notice"><%= notice %></p>
-  <%
-      index = "Головна"
-      books = "Книги"  
-    %>
-    <p class="text-left"><%= link_to index, index_path %> / <%= link_to books, books_path %> / <%= @book.auth %> "<%= @book.title %>"</p>
-  <div class="show_h2 text-center">
-    <ul class="list-inline">
-      <li><%= image_tag @book.image_url.url(:medium), :class => "img-thumbnail" %></li>
-      <li>
-        <div>
-          <p class="show_h2">
-            <strong><%= @book.title %></strong>
-          </p>
-          <p class="show_h2">
-            <strong><%= @book.auth %></strong>
-          </p>
-          <p>
-            <strong><%= t ".label_Z" %></strong>
-            <%= @book.zhanr %>
-          </p>
-      </li>
-    </ul>
-  </div> 
-  <div class="show_h2_content">  
-    <p>
-      <ul class="list-inline">
-      <li><strong><%= t ".ocinka_kritikiv" %></strong></li>
-      <li><div class="review-rating" data-score="<%= ocinka_kritikiv %>"></div></li>
-    </p>
-    <%
-      like = t ".like"
-      dislike = t ".dislike"
-    %>
-    <p>
-      <span class="glyphicon glyphicon-thumbs-up"><%= @book.get_likes.size %></span>
-      <span class="glyphicon glyphicon-thumbs-down"><%= @book.get_dislikes.size %></span>
-      <%= link_to like, like_book_path(@book), class: "btn btn-default blue" %>
-      <%= link_to dislike, dislike_book_path(@book), class: "btn btn-default red" %><br>
-<!--
-<script type="text/javascript">
-Share = {
-    /**
-     * Показать пользователю диалог шаринга в сооветствии с опциями
-     * Метод для использования в inline-js в ссылках
-     * При блокировке всплывающего окна подставит нужный адрес и ползволит браузеру перейти по нему
-     *
-     * @example <a href="" onclick="return share.go(this)">like+</a>
-     *
-     * @param Object _element - элемент DOM, для которого
-     * @param Object _options - опции, все необязательны
-     */
-    go: function(_element, _options) {
-        var
-            self = Share,
-            options = $.extend(
-                {
-                    type:       'vk',    // тип соцсети
-                    url:        location.href,  // какую ссылку шарим
-                    count_url:  location.href,  // для какой ссылки крутим счётчик
-                    title:      document.title, // заголовок шаринга
-                    image:        '',             // картинка шаринга
-                    text:       '',             // текст шаринга
-                },
-                $(_element).data(), // Если параметры заданы в data, то читаем их
-                _options            // Параметры из вызова метода имеют наивысший приоритет
-            );
-  
-        if (self.popup(link = self[options.type](options)) === null) {
-            // Если не удалось открыть попап
-            if ( $(_element).is('a') ) {
-                // Если это <a>, то подставляем адрес и просим браузер продолжить переход по ссылке
-                $(_element).prop('href', link);
-                return true;
-            }
-            else {
-                // Если это не <a>, то пытаемся перейти по адресу
-                location.href = link;
-                return false;
-            }
-        }
-        else {
-            // Попап успешно открыт, просим браузер не продолжать обработку
-            return false;
-        }
-    },
-  
-    // ВКонтакте
-    vk: function(_options) {
-        var options = $.extend({
-                url:    location.href,
-                title:  document.title,
-                image:  '',
-                text:   '',
-            }, _options);
-  
-        return 'http://vkontakte.ru/share.php?'
-            + 'url='          + encodeURIComponent(options.url)
-            + '&title='       + encodeURIComponent(options.title)
-            + '&description=' + encodeURIComponent(options.text)
-            + '&image='       + encodeURIComponent(options.image)
-            + '&noparse=true';
-    },
-  
-    // Одноклассники
-    ok: function(_options) {
-        var options = $.extend({
-                url:    location.href,
-                text:   '',
-            }, _options);
-  
-        return 'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1'
-            + '&st.comments=' + encodeURIComponent(options.text)
-            + '&st._surl='    + encodeURIComponent(options.url);
-    },
-  
-    // Facebook
-    fb: function(_options) {
-        var options = $.extend({
-                url:    location.href,
-                title:  document.title,
-                image:  '',
-                text:   '',
-            }, _options);
-  
-        return 'http://www.facebook.com/sharer.php?s=100'
-            + '&p[title]='     + encodeURIComponent(options.title)
-            + '&p[summary]='   + encodeURIComponent(options.text)
-            + '&p[url]='       + encodeURIComponent(options.url)
-            + '&p[images][0]=' + encodeURIComponent(options.image);
-    },
-  
-    // Живой Журнал
-    lj: function(_options) {
-        var options = $.extend({
-                url:    location.href,
-                title:  document.title,
-                text:   '',
-            }, _options);
-  
-        return 'http://livejournal.com/update.bml?'
-            + 'subject='        + encodeURIComponent(options.title)
-            + '&event='         + encodeURIComponent(options.text + '<br/><a href="' + options.url + '">' + options.title + '</a>')
-            + '&transform=1';
-    },
-  
-    // Твиттер
-    tw: function(_options) {
-        var options = $.extend({
-                url:        location.href,
-                count_url:  location.href,
-                title:      document.title,
-            }, _options);
-  
-        return 'http://twitter.com/share?'
-            + 'text='      + encodeURIComponent(options.title)
-            + '&url='      + encodeURIComponent(options.url)
-            + '&counturl=' + encodeURIComponent(options.count_url);
-    },
-  
-// Google+
-    gg: function (_options) {
-        var options = $.extend({
-            url: location.href          
-        }, _options);
-  
-        return 'https://plus.google.com/share?url='
-            + encodeURIComponent(options.url);
-    },
-  
-    // Mail.Ru
-    mr: function(_options) {
-        var options = $.extend({
-                url:    location.href,
-                title:  document.title,
-                image:  '',
-                text:   '',
-            }, _options);
-  
-        return 'http://connect.mail.ru/share?'
-            + 'url='          + encodeURIComponent(options.url)
-            + '&title='       + encodeURIComponent(options.title)
-            + '&description=' + encodeURIComponent(options.text)
-            + '&imageurl='    + encodeURIComponent(options.image);
-    },
-  
-    // Открыть окно шаринга
-    popup: function(url) {
-        return window.open(url,'','toolbar=0,status=0,scrollbars=1,width=626,height=436');
-    }
-}
-</script>
-<script type="text/javascript">
-$(document).on('click', '.social_share', function(){
-    Share.go(this);
-});
-</script>
-<style type="text/css"> 
-.share_this{margin-top:15px;width:100%;}
-.social_share{float:right;margin-left:5px;color:#fff;padding:2px;}
-.social_share:hover{cursor:pointer;}
-.vk:hover{background:#ff6600;}
-.fb:hover{background:#ff6600;}
-.tw:hover{background:#ff6600;}
-.gg:hover{background:#ff6600;}
-.ok:hover{background:#ff6600;}
-.mr:hover{background:#ff6600;}
-.lj:hover{background:#ff6600;}
-.vk{background:#339900;}
-.fb{background:#339900;}
-.tw{background:#339900;}
-.gg{background:#339900;}
-.ok{background:#339900;}
-.mr{background:#339900;}
-.lj{background:#339900;}
-</style>
-<div class="share_this">
-    <a class="social_share vk" data-type="vk">ВКонтакте</a>
-    <a  class="social_share fb" data-type="fb">Facebook</a>
-    <a  class="social_share tw" data-type="tw">Twitter</a>
-    <a  class="social_share ok" data-type="ok">Одноклассники</a>
-    <a  class="social_share gg" data-type="gg">Google+</a>
-    <a  class="social_share mr" data-type="mr">Mail.Ru</a>
-    <a  class="social_share lj" data-type="lj">LiveJournal</a>
-</div>
--->
-<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
-  <a class="a2a_button_facebook"></a>
-  <a class="a2a_button_twitter"></a>
-  <a class="a2a_button_google_plus"></a>
-  <a class="a2a_button_google_gmail"></a>
-  <a class="a2a_button_whatsapp"></a>
-  <a class="a2a_button_facebook_messenger"></a>
-  <a class="a2a_button_line"></a>
-  <a class="a2a_button_skype"></a>
-  <a class="a2a_button_telegram"></a>
-  <a class="a2a_button_viber"></a>
-  <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-</div>
-<script async src="https://static.addtoany.com/menu/page.js"></script>
-    </p>
-    <p>
-      <strong><%= t ".label_Q" %></strong>
-      <%= @book.pages_qty %>
-    </p>
-    <p>
-      <strong><%= t ".label_D" %></strong>
-      <%= @book.description %>
-    </p>
-    <p>
-      <strong><% read = t ".read" %></strong>
-      <%= t ".language" %>: <%= @book.language %>
-    </p>
-    <p> 
-      <strong><%= "Формат: " + @book.rozshirennya %></strong><br>
-        <%=form_for :download, url:  downl_path do |f| %>
-          <%= f.text_field :url_to_book, :value => @book.name_of_file + "." + @book.rozshirennya, :type => "hidden" %>
-          <% download = t ".download" %>
-          <%= link_to read, read_book_path(@book), class: "btn btn-default btn-block button-background" %>
-           <%= link_to "Cлухати", listen_book_path(@book), class: "btn btn-default btn-block button-background" %>
-          <%= f.submit download, class: "btn btn-default btn-block button-background", :id => "download" %>
-        <% end %>
-    </p>
 
-  </div>
-  <div class="show_h2_content text-center">
-    <%
-      like = t ".like"
-      dislike = t ".dislike"
-      edit = t ".edit"
-      back = t ".back"
-      delete = t ".delete"
-      question = t ".question"
-      read = t ".read"
-    %>
-    <%= link_to back, books_path, class: "btn btn-default btn-block button-background" %>
-  </div><br>
-  <div id="line"></div>
-  <br><br><br>
-  <div>
-      <a href="#" class="show_kritics" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><h2 class="text-left"><%= t ".kritics" %></h2><b class=" icon-angle-down"></b></a></br>
-    <div class="block_kritics">
-      <% @kritics.each do |kritic| %>
-        <div class="vidguk show_h2">
-          <ul class="list-inline text-left">
-            <li><h3><%= link_to kritic.name, kritic_path, :class => "product" %></h3></li>
-            <li><div class="review-rating" data-score="<%= kritic.ocinka %>"></div></li>
+<div class="prof masthead d-flex">
+  <div class="container my-auto">
+    <div class="row">
+      <%
+        index = "Головна"
+        books = "Книги"   
+      %>
+      <ol class="breadcrumb col-md-10 center-block"> 
+        <li><a href="portfolio.php"><%= link_to index, index_path %></a></li>
+        <li><%= books %><%= link_to books, books_path %></li>
+        <li class="active"><%= @book.auth %> "<%= @book.title %></li>
+      </ol>
+      <div class="col-md-10 col-sm-6 col-xs-6 mx-auto body-background center-block">
+        <ul class="list-inline">
+          <li><%= image_tag @book.image_url.url(:medium), :class => "img-thumbnail" %></li>
+          <li>
+            <div>
+              <p class="show_h2">
+                <strong><%= @book.title %></strong>
+              </p>
+              <p class="show_h2">
+                <strong><%= @book.auth %></strong>
+              </p>
+              <p>
+                <strong><%= t ".label_Z" %></strong>
+                <%= @book.zhanr %>
+              </p>
+          </li>
+        </ul>
+        <p id="notice"><%= notice %></p> 
+        <p>
+          <ul class="list-inline">
+            <li><strong><%= t ".ocinka_kritikiv" %></strong></li>
+            <li><div class="review-rating" data-score="<%= ocinka_kritikiv %>"></div></li>
           </ul>
-          <p><%= kritic.recensiya %></p>
-          <p>
-            <span class="glyphicon glyphicon-thumbs-up"><%= kritic.get_likes.size %></span>
-            <span class="glyphicon glyphicon-thumbs-down"><%= kritic.get_dislikes.size %></span>
-          </p>
-          <div class="show_h2_content text-center">
-            <%= link_to "Подобається", like_kritic_path(kritic), class: "btn btn-default blue" %>
-            <%= link_to "Неподобається", dislike_kritic_path(kritic), class: "btn btn-default red" %><br>
+        </p>
+        <%
+          like = t ".like"
+          dislike = t ".dislike"
+        %>
+        <p>
+          <span class="glyphicon glyphicon-thumbs-up"><%= @book.get_likes.size %></span>
+          <span class="glyphicon glyphicon-thumbs-down"><%= @book.get_dislikes.size %></span>
+          <%= link_to like, like_book_path(@book), class: "btn btn-default blue" %>
+          <%= link_to dislike, dislike_book_path(@book), class: "btn btn-default red" %><br>
+        </p>
+        <p>
+          <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_gmail"></a>
+            <a class="a2a_button_whatsapp"></a>
+            <a class="a2a_button_facebook_messenger"></a>
+            <a class="a2a_button_line"></a>
+            <a class="a2a_button_skype"></a>
+            <a class="a2a_button_telegram"></a>
+            <a class="a2a_button_viber"></a>
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
           </div>
-          <div class="text-right">
-            <%= link_to delete, kritic, method: :delete, data: { confirm: question } %> | <%= link_to edit, edit_kritic_path(kritic) %>
-          </div>
+          <script async src="https://static.addtoany.com/menu/page.js"></script>
+        </p>
+        <p>
+          <strong><%= t ".label_Q" %></strong>
+          <%= @book.pages_qty %>
+        </p>
+        <p>
+          <strong><%= t ".label_D" %></strong>
+          <%= @book.description %>
+        </p>
+        <p>
+          <strong><% read = t ".read" %></strong>
+          <%= t ".language" %>: <%= @book.language %>
+        </p>
+        <p> 
+          <strong><%= "Формат: " + @book.rozshirennya %></strong><br>
+          <%=form_for :download, url:  downl_path do |f| %>
+            <%= f.text_field :url_to_book, :value => @book.name_of_file + "." + @book.rozshirennya, :type => "hidden" %>
+            <% download = t ".download" %>
+            <%= link_to read, read_book_path(@book), class: "btn btn-default btn-block button-background" %>
+             <%= link_to "Cлухати", listen_book_path(@book), class: "btn btn-default btn-block button-background" %>
+            <%= f.submit download, class: "btn btn-default btn-block button-background", :id => "download" %>
+          <% end %>
+        </p>
+        <%
+          like = t ".like"
+          dislike = t ".dislike"
+          edit = t ".edit"
+          back = t ".back"
+          delete = t ".delete"
+          question = t ".question"
+          read = t ".read"
+        %>
+        <br>
+        <%= link_to back, books_path, class: "btn btn-default btn-block button-background" %>
+        <br><br>
+        <div id="line"></div>
+        <br><br><br>
+        <a href="#" class="show_kritics" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><h2 class="text-left"><%= t ".kritics" %></h2><b class=" icon-angle-down"></b></a></br>
+        <div class="block_kritics">
+          <% @kritics.each do |kritic| %>
+            <div class="vidguk show_h2">
+              <ul class="list-inline text-left">
+                <li><h3><%= link_to kritic.name, kritic_path, :class => "product" %></h3></li>
+                <li><div class="review-rating" data-score="<%= kritic.ocinka %>"></div></li>
+              </ul>
+              <p><%= kritic.recensiya %></p>
+              <p>
+                <span class="glyphicon glyphicon-thumbs-up"><%= kritic.get_likes.size %></span>
+                <span class="glyphicon glyphicon-thumbs-down"><%= kritic.get_dislikes.size %></span>
+              </p>
+              <div class="show_h2_content text-center">
+                <%= link_to "Подобається", like_kritic_path(kritic), class: "btn btn-default blue" %>
+                <%= link_to "Неподобається", dislike_kritic_path(kritic), class: "btn btn-default red" %><br>
+              </div>
+              <div class="text-right">
+                <%= link_to delete, kritic, method: :delete, data: { confirm: question } %> | <%= link_to edit, edit_kritic_path(kritic) %>
+              </div>
+            </div>
+          <% end %>
         </div>
-      <% end %>
+        <br>
+        <a href="#" class="add_kritics" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><h3 class="text-left"><%= t ".kritic" %></h3><b class=" icon-angle-down"></b></a>
+        <div class="form_kritics">
+          <%= render 'form_kritics', kritic: @kritic %>
+        </div>
+        <div id="line"></div>
+
+        <a href="#" class="show_vidgucs" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><h2 class="text-left"><%= t ".vidguks" %></h2></b></a></br>
+        <div class="block_vidgucs">
+          <% @vidguks.each do |vidguk| %>
+            <div class="vidguk show_h2">
+              <ul class="list-inline text-left">
+                <li><h3><%= link_to vidguk.name, vidguk_path, :class => "product" %></h3></li>
+                <li><h3><%= vidguk.date %></h3></li>
+              </ul>
+              <p><%= vidguk.vidguk %></p>
+              <p>
+                <span class="glyphicon glyphicon-thumbs-up"><%= vidguk.get_likes.size %></span>
+                <span class="glyphicon glyphicon-thumbs-down"><%= vidguk.get_dislikes.size %></span>
+              </p>
+              <div class="text-right">
+                <%= link_to delete, vidguk, method: :delete, data: { confirm: question } %> | <%= link_to edit, edit_vidguk_path(vidguk) %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <a href="#" class="add_vidgucs" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><h3 class="text-left"><%= t ".vidguk" %></h3><b class=" icon-angle-down"></b></a>
+        <div class="form_vidgucs">
+          <%= render 'form_vidguk', vidguk: @vidguk %>
+          <br>
+        </div>
+      </div>
     </div>
   </div>
-  <a href="#" class="add_kritics" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><h3 class="text-left"><%= t ".kritic" %></h3><b class=" icon-angle-down"></b></a>
-  <div class="form_kritics">
-    <%= render 'form_kritics', kritic: @kritic %>
-  </div>
-  <div id="line"></div>
 </div>
-<div class="col-md-4 col-md-offset-4 back">
-  <div>
-      <a href="#" class="show_vidgucs" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><h2 class="text-left"><%= t ".vidguks" %></h2></b></a></br>
-    <div class="block_vidgucs">
-      <% @vidguks.each do |vidguk| %>
-        <div class="vidguk show_h2">
-          <ul class="list-inline text-left">
-            <li><h3><%= link_to vidguk.name, vidguk_path, :class => "product" %></h3></li>
-            <li><h3><%= vidguk.date %></h3></li>
-          </ul>
-          <p><%= vidguk.vidguk %></p>
-          <p>
-            <span class="glyphicon glyphicon-thumbs-up"><%= vidguk.get_likes.size %></span>
-            <span class="glyphicon glyphicon-thumbs-down"><%= vidguk.get_dislikes.size %></span>
-          </p>
-          <div class="text-right">
-            <%= link_to delete, vidguk, method: :delete, data: { confirm: question } %> | <%= link_to edit, edit_vidguk_path(vidguk) %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  <a href="#" class="add_vidgucs" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><h3 class="text-left"><%= t ".vidguk" %></h3><b class=" icon-angle-down"></b></a>
-  <div class="form_vidgucs">
-    <%= render 'form_vidguk', vidguk: @vidguk %>
-  </div>
 </div>
  <script type="text/javascript">
     $("#download").click(function(){

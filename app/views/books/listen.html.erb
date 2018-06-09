@@ -1,92 +1,105 @@
-<div id="loading" class="navbar-fixed-top"></div>
-<div class="col-md-4 col-md-offset-4 back">
-  <p id="notice"><%= notice %></p>
-  <div class="show_h2 text-center">
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">
-        <p class="show_h2 text-center">
-          <strong>Прослухати <%= @book.title %></strong>
-        </p>
-      </li>
-      <li class="list-group-item text-center">
-        <p class="show_h2">
-          <strong>Автор: <%= @book.auth %></strong>
-        </p>
-      </li>
-      <li class="list-group-item">
-        <center><%= image_tag @book.image_url.url(:medium), :class => "img-thumbnail" %></center>
-      </li>
-      <%
-        text = []
-        #contents = File.read("public/uploads/" + @book.name_of_file + "." + @book.rozshirennya)
-        #text = contents.encode(Encoding.find('UTF-8'))
-        #text = File.read("public/uploads/" + @book.name_of_file + "." + @book.rozshirennya)
-        #text = ""
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+<script src="//code.simplesvg.com/1/1.0.0-beta5/simple-svg.min.js"></script>
 
-        reader = PDF::Reader.new("public/uploads/Origin.pdf")
-        #book_page = 1
-        reader.pages.each do |page| 
-          if page.blank? != true || page.empty? != true
-            text.push page.text
-          end
-        end
+<div class="d-flex">
+  <%
+    text = []
+    #contents = File.read("public/uploads/" + @book.name_of_file + "." + @book.rozshirennya)
+    #text = contents.encode(Encoding.find('UTF-8'))
+    #text = File.read("public/uploads/" + @book.name_of_file + "." + @book.rozshirennya)
+    #text = ""
+    reader = PDF::Reader.new("public/uploads/Origin.pdf")
+    #book_page = 1
+    reader.pages.each do |page| 
+      if page.blank? != true || page.empty? != true
+        text.push page.text
+      end
+    end
+  %>
+  <div class="container my-auto">
+    <div class="row">
+      <%
+        index = "Головна"  
       %>
-      <li class="list-group-item page">
-        <center>Сторінка: 1</center>
-      </li>
-      <li class="list-group-item">
-        <div class="form-group">
-          <textarea class="form-control" id="textForSpeach"></textarea>
+      <ol class="breadcrumb col-md-10 center-block"> 
+        <li><a href="portfolio.php"><%= link_to index, index_path %></a></li>
+        <li class="active"><%= link_to @book.title, @book, class: "product" %></li>
+        <li class="active"><%= "Слухати" %></li>
+      </ol>
+        <div class="col-md-10 col-sm-6 col-xs-6 mx-auto">
+          <div class="player">
+            <div class="player-head">
+              <span class="simple-svg pull-right settings" id="settings" data-icon="mdi-settings" data-inline="false"></span>
+              <ul class="list-group list-group-flush" style="display: none;">
+                <li class="list-group-item">
+                  <center class="thispage">Сторінка: 1</center>
+                </li>
+                <li class="list-group-item">
+                  <div class="form-group">
+                    <textarea class="form-control" id="textForSpeach"></textarea>
+                  </div>
+                </li> 
+                <li class="list-group-item">
+                  
+                </li>
+                <li class="list-group-item">
+                  <div class="form-group">
+                    <label><span>Гучність: </span></label>
+                    <input class="form-control" type="range" id="volumeSlider" min="0" max="1" value="0.5" step="0.1">
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="form-group">
+                    <label><span>Темп: </span></label>
+                    <input class="form-control" type="range" id="rateSlider" min="0" max="1" value="0.5" step="0.1">
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="form-group">
+                    <label><span>Pitch: </span></label>
+                    <input class="form-control" type="range" id="pitchSlider" min="0" max="2" value="0.5" step="0.1">
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="player-body">
+              <div class="album-info">
+                <span class="album-title">
+                  <%= @book.title %>
+                </span>
+                <span class="song-title">
+                  <%= @book.auth %>
+                </span>
+                <div class="form-row align-items-center form-group">
+                  <label>
+                    <span>Голос: </span>
+                    <select class="custom-select mr-sm-2" id="voiceOptions"></select>
+                  </label>
+                </div>
+                <span class="player-controls">
+                  <span title="Розпочати" id="start" class="glyphicon glyphicon-play aligned start"></span>
+                  <span style="display: none;" title="Пауза" id="play" class="glyphicon glyphicon-pause aligned pause"></span>
+                  <span style="display: none;" title="Відновити" id="play" class="glyphicon glyphicon-play aligned resume"></span>
+                  <span style="display: none;" title="Зупинити" id="play" class="glyphicon glyphicon-stop aligned stop"></span>
+                </span>
+              </div>
+            </div>
+            <div class="player-footer">
+              <div class="player-seekbar"></div>
+              <div class="song-controls">
+                <span title="Попередня сторінка" id="play" class="glyphicon glyphicon-backward aligned pull-left" onclick="Prev()"></span>
+                <span title="Наступна сторінка" id="play" class="glyphicon glyphicon-forward aligned pull-right" onclick="Next()"></span>
+              </div>
+            </div>
+          </div>        
         </div>
-      </li> 
-      <li class="list-group-item">
-        <div class="form-row align-items-center form-group">
-          <label>
-            <span>Голос: </span>
-            <select class="custom-select mr-sm-2" id="voiceOptions"></select>
-          </label>
-        </div>
-      </li>
-      <li class="list-group-item">
-        <div class="form-group">
-          <label><span>Гучність: </span>
-          <input class="form-control" type="range" id="volumeSlider" min="0" max="1" value="0.5" step="0.1">
-        </div>
-      </li>
-      <li class="list-group-item">
-        <div class="form-group">
-          <label><span>Rate: </span>
-          <input class="form-control" type="range" id="rateSlider" min="0" max="1" value="0.5" step="0.1">
-        </div>
-      </li>
-      <li class="list-group-item">
-        <div class="form-group">
-          <label><span>Pitch: </span>
-          <input class="form-control" type="range" id="pitchSlider" min="0" max="2" value="0.5" step="0.1">
-        </div>
-      </li>
-      <li class="list-group-item">
-        <center>
-          <div class="btn-group" role="group">
-            <div class="btn btn-default start"><span title="Play" id="play" class="glyphicon glyphicon-play aligned"></span> Розпочати</div>
-            <div style="display: none;" class="btn btn-default pause"><span title="Play" id="play" class="glyphicon glyphicon-pause aligned"></span> Пауза</div>
-            <div style="display: none;" class="btn btn-default resume"><span title="Play" id="play" class="glyphicon glyphicon-play aligned"></span> Продовжити</div>
-            <div style="display: none;" class="btn btn-default stop"><span title="Play" id="play" class="glyphicon glyphicon-stop aligned"></span> Зупинити</div>
-          </div>
-        </center>
-      </li>
-      <li class="list-group-item">
-        <div class="btn-group" role="group">
-          <div class="btn btn-default" onclick="Prev()"><span title="-1 second" id="play" class="glyphicon glyphicon-chevron-left aligned"></span> Попередня сторінка</div>
-          <div class="btn btn-default" onclick="Next()">Наступна сторінка <span title="+1 second" id="play" class="glyphicon glyphicon-chevron-right aligned"></span></div>
-        </div>
-      </li>
-    </ul>
-  </div> 
+      </div>
+    </div> 
+  </div>
   <script type="text/javascript">
     //старт плеєра
     $(".start").click(function() {
-      $(".start").html("<span title='Play' id='play' class='glyphicon glyphicon-play aligned'></span> Розпочати з початку");
       $(".pause").show();
       $(".stop").show();
       speak('speak');
@@ -100,6 +113,9 @@
             $(".upload").hide();
         }
       */
+    });
+    $("#settings").click(function() {
+      $(".list-group").toggle();
     });
     //пауза
     $(".pause").click(function() {
@@ -118,7 +134,7 @@
       $(".pause").hide();
       $(".resume").hide();
       $(".stop").hide();
-      $(".start").html("<span title='Play' id='play' class='glyphicon glyphicon-play aligned'></span> Розпочати");
+      $(".start").show();
       speak('stop');
     });
 
@@ -127,12 +143,12 @@
     $("#textForSpeach").text(text[i])
     function Next(){
       i++;
-      $(".page center").text("Сторінка: " + (i+1))
+      $(".thispage").text("Сторінка: " + (i+1))
       $("#textForSpeach").text(text[i])
     }
     function Prev(){
       i--;
-      $(".page center").text("Сторінка: " + (i+1));
+      $(".thispage").text("Сторінка: " + (i+1));
       $("#textForSpeach").text(text[i])
     }
 
@@ -163,31 +179,28 @@
     function speak(action){
       switch(action){
         case "stop":
-          speechSynthesis.cancel();
+          window.speechSynthesis.cancel();
           break;
         case "speak":
-          speechSynthesis.cancel();
+          window.speechSynthesis.cancel();
           var msg = new SpeechSynthesisUtterance(textForSpeach.value);
           msg.volume = volumeSlider.value;
           msg.voice = voiceMap[voiceOptions.value];
           msg.rate = rateSlider.value;
           msg.pitch = pitchSlider.value;
-          speechSynthesis.speak(msg);
+          window.speechSynthesis.speak(msg);
             msg.onend = function(event) {
               Next();
               speak("speak");
             }
           break;
         case "pause":
-          speechSynthesis.pause();
+          window.speechSynthesis.pause();
           break;
         case "continue":
-          speechSynthesis.resume();
+          window.speechSynthesis.resume();
           break;
       }
-    }
-    function check(action){
-      
     }
   </script>
 </div>
