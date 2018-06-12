@@ -78,19 +78,17 @@
                   </label>
                 </div>
                 <span class="player-controls">
+                  <span title="Попередня сторінка" id="play" class="glyphicon glyphicon-backward aligned pull-left" onclick="Prev()"></span>
                   <span title="Розпочати" id="start" class="glyphicon glyphicon-play aligned start"></span>
                   <span style="display: none;" title="Пауза" id="play" class="glyphicon glyphicon-pause aligned pause"></span>
                   <span style="display: none;" title="Відновити" id="play" class="glyphicon glyphicon-play aligned resume"></span>
                   <span style="display: none;" title="Зупинити" id="play" class="glyphicon glyphicon-stop aligned stop"></span>
+                  <span title="Наступна сторінка" id="play" class="glyphicon glyphicon-forward aligned pull-right" onclick="Next()"></span>
                 </span>
               </div>
             </div>
             <div class="player-footer">
               <div class="player-seekbar"></div>
-              <div class="song-controls">
-                <span title="Попередня сторінка" id="play" class="glyphicon glyphicon-backward aligned pull-left" onclick="Prev()"></span>
-                <span title="Наступна сторінка" id="play" class="glyphicon glyphicon-forward aligned pull-right" onclick="Next()"></span>
-              </div>
             </div>
           </div>        
         </div>
@@ -134,7 +132,6 @@
       $(".pause").hide();
       $(".resume").hide();
       $(".stop").hide();
-      $(".start").show();
       speak('stop');
     });
 
@@ -179,20 +176,27 @@
     function speak(action){
       switch(action){
         case "stop":
-          window.speechSynthesis.cancel();
+          window.speechSynthesis.stop();
           break;
         case "speak":
           window.speechSynthesis.cancel();
-          var msg = new SpeechSynthesisUtterance(textForSpeach.value);
-          msg.volume = volumeSlider.value;
-          msg.voice = voiceMap[voiceOptions.value];
-          msg.rate = rateSlider.value;
-          msg.pitch = pitchSlider.value;
-          window.speechSynthesis.speak(msg);
+          /*
             msg.onend = function(event) {
               Next();
               speak("speak");
             }
+          */
+          txt = textForSpeach.value;
+          sentences = txt.split(".")
+          for (i = 0; i < sentences.length; i++) {
+            sentence = sentences[i]
+            var msg = new SpeechSynthesisUtterance(sentence);
+              msg.volume = volumeSlider.value;
+              msg.voice = voiceMap[voiceOptions.value];
+              msg.rate = rateSlider.value;
+              msg.pitch = pitchSlider.value;
+              window.speechSynthesis.speak(msg);
+          }
           break;
         case "pause":
           window.speechSynthesis.pause();
