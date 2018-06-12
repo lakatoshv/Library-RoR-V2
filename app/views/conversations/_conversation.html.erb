@@ -4,7 +4,7 @@
   question = t ".question"
   read = t ".read"
 %>
-<li class="list-group-item clearfix">
+<li class="list-group-item clearfix" style="background: #fff;">
   <% conversation.receipts_for(current_user).each do |receipt| %>
     <b><%= t ".from" %>:</b> <%= receipt.message.sender.name %>
   <% end %><br>
