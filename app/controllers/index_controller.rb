@@ -6,6 +6,6 @@ class IndexController < ApplicationController
 		else
 			session[:lang] = "ua"
 		end
-
+		redirect_to books_url
 	end
 end
