@@ -27,7 +27,28 @@
 
 <%- if devise_mapping.omniauthable? %>
   <%- resource_class.omniauth_providers.each do |provider| %>
-    <%= link_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider) %><br />
+    <%
+        with = OmniAuth::Utils.camelize(provider) 
+        href = omniauth_authorize_path(resource_name, provider)
+    %>
+      <div class="col-xs-4 col-sm-4">
+        <a href="<%= href %>" class="btn btn-lg btn-default btn-block>">
+          <i class="fa fa-<%= provider %> visible-xs"></i>
+          <span class="hidden-xs" style="color: black;"><%= with %></span>
+        </a>
+      </div>
   <% end -%>
 <% end -%>
+
+<!--
+<div class="col-xs-4 col-sm-2">
+                    <a href="#" class="btn btn-lg btn-block omb_btn-twitter">
+                      <i class="fa fa-twitter visible-xs"></i>
+                      <span class="hidden-xs">Twitter</span>
+                    </a>
+                  </div>  
+                  
+-->
+
+
 
