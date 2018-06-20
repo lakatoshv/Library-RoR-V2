@@ -37,44 +37,43 @@
   </div>
 </div>
 <% end %>
-<!--
-<div class="container">
+<div class="container" id="container">
   <div class="row">
-    < % @books.each do |book| %>
+    <% @books.each do |book| %>
       <div class="col-lg-3">
         <div class="box">
           <div class="box-gray aligncenter">
-            <h3>< %= link_to book.title, book, class: "product" %></h3>
-            <h4>< %= link_to book.auth, auths_path + "?utf8=✓&search=" + book.auth + "&commit=Пошук", :class => "product" %></h4>
+            <h3><%= link_to book.title, book, class: "product" %></h3>
+            <h4><%= link_to book.auth, auths_path + "?utf8=✓&search=" + book.auth + "&commit=Пошук", :class => "product" %></h4>
             <div class="icon">
               <i class="fa fa-desktop fa-3x"></i>
             </div>
             <div class="product-item">
-              < %= image_tag book.image_url.url(:medium), :class => "img-thumbnail" %>
+              <%= image_tag book.image_url.url(:medium), :class => "img-thumbnail" %>
               <div class="product-minidescription">
-                <br><p>< %= book.mini_description %></p><br><br>
+                <br><p><%= book.mini_description %></p><br><br>
                 <a class="text-center" style="font-size: 20px;" ><i class="glyphicon glyphicon-search"></i></a>
               </div>
             </div>
             <div class="buttons-bottom">
-              < % 
+              <% 
                 read = t ".read"
                 read += "(" + book.language + ")"
                 download = t ".download"
                 download += "(" + book.rozshirennya + ")" 
               %>
-              < %= link_to read, read_book_path(book), class: "btn btn-default btn-block button-background" %>
-              < %=form_for :download, url:  downl_path do |f| %>
-                < %= f.text_field :url_to_book, :value => book.name_of_file + "." + book.rozshirennya, :type => "hidden" %>
-                < %= f.submit download, class: "btn btn-default btn-block button-background", :id => "download" %>
-              < % end %>
+              <%= link_to read, read_book_path(book), class: "btn btn-default btn-block button-background" %>
+              <%=form_for :download, url:  downl_path do |f| %>
+                <%= f.text_field :url_to_book, :value => book.name_of_file + "." + book.rozshirennya, :type => "hidden" %>
+                <%= f.submit download, class: "btn btn-default btn-block button-background", :id => "download" %>
+              <% end %>
           </div>
         </div>
       </div>
     </div>
-  < % end %>
+  <% end %>
 </div>
--->
+</div>
 <% if @books.count > 5 %>
   <div class="col-md-6 col-md-offset-3 text-center back">
     <%= will_paginate @books %>
@@ -114,39 +113,43 @@
   <button><span class="glyphicon glyphicon-chevron-right" OnClick="move('chevron-right');"> </span></button>
 </div>
 
-<div id="container"></div>
-
   <script>
-  var books = <%=  @books.to_json.html_safe %>;
-  var config = {
+    if (screen.width > 480 && $(window).width() > 480){
+      var books = <%=  @books.to_json.html_safe %>;
+      var config = {
         //controls_target:    [-2600, 0, 1300],
         controls_target:    [0, 0, 0],
         controls_allow_move:  true,
         controls_allow_zoom:  true,
-  };
-  var bookid = 0;
-  var targets = { table: [], sphere: [], helix: [], grid: [] };
-    var objects = [];
-    var intersects;
-    var arrlength = Object.keys( books ).length;
-    var numCubes = 10;
-    var container, stats;
-    var camera, scene, renderer, controls;
-    var textureLoader = new THREE.TextureLoader();
-    var raycaster;
-    var mouse;
-    var isMouseDown = false,
-      onMouseDownPosition, onMouseDownTheta = 45,
-      onMouseDownPhi = 60,
-      phi = 60,
-    camerapos = 0,  theta = 0,
-      radious = 1600,
-      count=0;
-    var lichilnick = 0;
-    var startX = -1800, startY = 800, x = 0, y = 0, z = 0;
-    var typeDef = "helix";
-    init(typeDef);
-    animate();
+      };
+      var bookid = 0;
+      var targets = { table: [], sphere: [], helix: [], grid: [] };
+      var objects = [];
+      var intersects;
+      var arrlength = Object.keys( books ).length;
+      var numCubes = 10;
+      var container, stats;
+      var camera, scene, renderer, controls;
+      var textureLoader = new THREE.TextureLoader();
+      var raycaster;
+      var mouse;
+      var isMouseDown = false,
+        onMouseDownPosition, onMouseDownTheta = 45,
+        onMouseDownPhi = 60,
+        phi = 60,
+        camerapos = 0,  theta = 0,
+        radious = 1600,
+        count=0;
+      var lichilnick = 0;
+      var startX = -1800, startY = 800, x = 0, y = 0, z = 0;
+      var typeDef = "helix";
+      init(typeDef);
+      animate();
+    }
+    else{
+      document.getElementById( 'menu' ).remove()
+      document.getElementById( 'nav-menu' ).remove()
+    }
     function ChangeImage(id,image){
                 var el=document.getElementById(id);
                 el.src=image;
@@ -465,7 +468,7 @@
     }
 
   </script>
-<button type="button" id="click" class="btn btn-primary">
+<button hidden="" type="button" id="click" class="btn btn-primary">
 </button>
   <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -541,29 +544,6 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
         -->
       </div>
-    </div>
-  </div>
-</div>
-
-  
-  <!-- Modal -->
-  <div class="modal fade" id="myModal3" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
-          <h4 class="modal-title">Static Backdrop</h4>
-        </div>
-        <div class="modal-body">
-          <p>You cannot click outside of this modal to close it.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
     </div>
   </div>
 </div>
