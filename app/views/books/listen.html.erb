@@ -30,8 +30,14 @@
         <div class="col-md-10 col-sm-6 col-xs-6 mx-auto">
           <div class="player">
             <div class="player-head">
-              <span class="simple-svg pull-right settings" id="settings" data-icon="mdi-settings" data-inline="false"></span>
-              <ul class="list-group list-group-flush" style="display: none;">
+              <span class="simple-svg pull-right settings" data-icon="mdi-settings" data-inline="false" data-toggle="collapse" data-target="#demo"></span>
+              <center>
+                <ul class="list-inline">
+                  <li class="list-inline-item"><label class="radio-inline"><input type="radio" id="player" name="player" value="1">Варіант 1</label></li>
+                  <li class="list-inline-item"><label class="radio-inline"><input type="radio" id="player" name="player" value="2" checked>Варіант 2</label></li>
+                </ul>
+              </center>
+              <ul class="list-group list-group-flush collapse" id="demo">
                 <li class="list-group-item">
                   <center class="thispage">Сторінка: 1</center>
                 </li>
@@ -93,13 +99,22 @@
           </div>        
         </div>
       </div>
+      <center>
+        <div class="form-row align-items-center form-group">
+          <label>
+            <audio src="" class="speech" controls="controls" hidden="">муз</audio>
+          </label>
+        </div>
+      </center>
     </div> 
   </div>
   <script type="text/javascript">
+  var L = 0;
     //старт плеєра
     $(".start").click(function() {
       $(".pause").show();
       $(".stop").show();
+      L = 0;
       speak('speak');
       /*
         if($('input[name=type]:checked').val() == "upload"){
@@ -111,9 +126,6 @@
             $(".upload").hide();
         }
       */
-    });
-    $("#settings").click(function() {
-      $(".list-group").toggle();
     });
     //пауза
     $(".pause").click(function() {
@@ -162,48 +174,76 @@
       for(var i = 0; i < voices.length; i++){
         var voice = voices[i];
         var option = document.createElement("option");
-        option.value = voice.name;
+        option.value = voice.lang;
         option.innerHTML = voice.name + "(" + voice.lang + ")";
         voiceOptions.appendChild(option);
-        voiceMap[voice.name] = voice;
+        voiceMap[voice.lang] = voice;
       }
     }
+
+    $(".speech").on('ended', function(){
+      L++;
+      speakAction();
+    });
 
     window.speechSynthesis.onvoiceschanged = function(e){
       loadVoices();
     }
 
     function speak(action){
+      var player =  document.querySelector('input[name="player"]:checked').value
+      var audioplayer = document.getElementsByClassName("speech"); 
       switch(action){
         case "stop":
-          window.speechSynthesis.stop();
+          if(player == 1) window.speechSynthesis.cancel();
+          else $(".speech").removeAttr('hidden').trigger('stop');
           break;
         case "speak":
           window.speechSynthesis.cancel();
-          /*
-            msg.onend = function(event) {
-              Next();
-              speak("speak");
-            }
-          */
-          txt = textForSpeach.value;
-          sentences = txt.split(".")
-          for (i = 0; i < sentences.length; i++) {
-            sentence = sentences[i]
-            var msg = new SpeechSynthesisUtterance(sentence);
-              msg.volume = volumeSlider.value;
-              msg.voice = voiceMap[voiceOptions.value];
-              msg.rate = rateSlider.value;
-              msg.pitch = pitchSlider.value;
-              window.speechSynthesis.speak(msg);
-          }
+          speakAction();
           break;
         case "pause":
-          window.speechSynthesis.pause();
+          if(player == 1) window.speechSynthesis.pause();
+          else $(".speech").removeAttr('hidden').trigger('pause');
           break;
         case "continue":
-          window.speechSynthesis.resume();
+          if(player == 1) window.speechSynthesis.continue();
+          else $(".speech").removeAttr('hidden').trigger('play');
           break;
+      }
+    }
+    function speakAction(){
+      var player =  document.querySelector('input[name="player"]:checked').value
+      /*
+        msg.onend = function(event) {
+          Next();
+          speak("speak");
+        }
+      */
+      if(player == 1){
+        var txt = textForSpeach.value;
+        sentences = txt.split(".")
+        for (i = 0; i < sentences.length; i++) {
+          sentence = sentences[i]
+          var msg = new SpeechSynthesisUtterance(sentence);
+          msg.volume = volumeSlider.value;
+          msg.voice = voiceMap[voiceOptions.value];
+          msg.rate = rateSlider.value;
+          msg.pitch = pitchSlider.value;
+          window.speechSynthesis.speak(msg);
+        }
+      }
+      else if(player == 2){
+        var txt = textForSpeach.value;
+        sentences = txt.split(".")
+        if(L < sentences.length){
+          word = sentences[L].split(".");
+          sentence = encodeURIComponent(sentences[L]);
+          var voice = voiceOptions.value;
+          var url = "http://translate.google.com/translate_tts?tl=" + voice + "&q=" + sentence + "&client=tw-ob&ie=UTF-8";
+          $(".speech").attr("src", url).get(0);
+          $(".speech").removeAttr('hidden').trigger('play').get(0);
+        }
       }
     }
   </script>
