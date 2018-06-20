@@ -19,9 +19,21 @@
       - _**'chosen-rails'**_
       - _**'acts_as_votable'** -- для додавання лайків і дизлайків_
       - _**"rails-i18n"** -- для багатомовності_
-2. ### **Bootstrap**
 3. ### **jQuery**
-4. ### **SQLite3**
+4. ### **Бази даних:**
+    - [ ] _**SQLite3** -- для збереження даних на локальному сервері_
+    - [ ] _**PostgreSQL** -- для збереження даих на сервері_
+5. ### **WebGL:**
+    - [ ] _**Three.js**_
+    - [ ] _**Stats.js** -- Монітор продуктивності JavaScript_
+    - [ ] _**Projector.js**_
+    - [ ] _**Tween.js** -- Ефекти вилітання і повернення назад для книг_
+    - [ ] _**OrbitControls.js** -- Прокручування шкафу за допомогою миші_
+    - [ ] _**CSS3DRenderer.js** -- створення 3D книги_
+    - [ ] _**Modernizr.custom.js**_
+6. ### **Bootstrap**
+8. ### **CSS3**
+9. ### **modernizr.custom.js**
 
 
 ## **Виконані завдання:**
@@ -70,4 +82,22 @@
     - _Змінений дизайн блоку abouts_
 2. **[4.2](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.2)**
     - _Змінений дизайн блоку auths_
-  
+3. **[4.3](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.3)**
+    - _Стабільна версія вибору книги_
+4. **[4.4](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.4)**
+    - _Доданий railroady для відображення UML-звязків між таблицями у базі даних_
+5. **[4.4.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.4-bugs_fixed)**
+    - _Виправлені деякі помилки_
+6. **[4.5](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.5)**
+    - _Змінений дизайн блоку books_
+7. **[4.6](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.6)**
+    - _Змінений дизайн блоку conversations_
+8. **[4.7](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.7)**
+    - _Змінений дизайн блоку device_
+9. **[4.7.1](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.7.1)**
+    - _Деякі правки_
+10. **[4.8](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.8)**
+    - _Доданий ще один варіант плеєра з використанням google translate_tts технології_
+11. **[4.9](https://github.com/lakatoshv/Library-RoR-V2/tree/v4.9)**
+    - _Додана мобільна версія для книг_
+
